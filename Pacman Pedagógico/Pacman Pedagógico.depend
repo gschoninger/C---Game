@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1434503135 source:c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\pacman.c
+	<allegro5/allegro.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_image.h>
+	<stdio.h>
+	<math.h>
+

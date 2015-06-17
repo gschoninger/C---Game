@@ -5,13 +5,17 @@
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
 
-// Usada apenas para o printf()
+// Outras bibliotecas
 #include <stdio.h>
 #include <math.h>
 
 // Define o tamanho do mapa
 #define COL 20
 #define LIN 22
+
+#define TAMANHO_BLOCO 35
+#define X_MAPA 144
+#define Y_MAPA 51
 
 enum KEYS{UP, DOWN, LEFT, RIGHT};
 
@@ -23,6 +27,8 @@ typedef struct personagem
     int linhaAnt;
     int colunaAnt;
     int pontos;
+
+    ALLEGRO_BITMAP *sprite;
 }PERSONAGEM;
 
 typedef struct imagem
@@ -47,7 +53,7 @@ int main(void)
     IMAGEM imagem;
 
     // Posição inicial do personagem
-    jogador.linha = 17;
+    jogador.linha = 11;
     jogador.coluna = 10;
     jogador.pontos = 0;
 
@@ -74,7 +80,7 @@ int main(void)
                           {3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3},  // 14
                           {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},  // 15
                           {3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3},  // 16
-                          {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 17
+                          {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 17
                           {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}   // 18
                          };
 
@@ -92,13 +98,14 @@ int main(void)
 
     ALLEGRO_BITMAP *bloco[3];
     ALLEGRO_BITMAP *parede[7];
+    ALLEGRO_BITMAP *sprite;
 
     // Testa a inicialização do Allegro
     if(!al_init())
         return -1;
 
     // Cria e testa o Display
-    al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+    //al_set_new_display_flags(ALLEGRO_FULLSCREEN);
     display = al_create_display(largura, altura);
     if(!display)
         return -1;
@@ -118,6 +125,8 @@ int main(void)
     imagem.parede[4] = al_load_bitmap("Sprites/Paredes/ParedeE.bmp");
     imagem.parede[5] = al_load_bitmap("Sprites/Paredes/ParedeF.bmp");
     imagem.parede[6] = al_load_bitmap("Sprites/Paredes/ParedeG.bmp");
+
+    jogador.sprite = al_load_bitmap("Sprites/Personagem/Personagem.bmp");
 
     event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);
@@ -195,7 +204,7 @@ int main(void)
 
 void desenhaJogador(PERSONAGEM *jogador)
 {
-    al_draw_filled_rectangle(35 * jogador->coluna + 144, 35 * jogador->linha + 51, 35 * jogador->coluna + 179, 35 * jogador->linha + 86, al_map_rgb(0, 255, 0));
+    al_draw_bitmap(jogador->sprite, TAMANHO_BLOCO * jogador->coluna + X_MAPA, TAMANHO_BLOCO * jogador->linha + Y_MAPA, 0);
 }
 
 // Função que desenha o Mapa na Tela
@@ -298,7 +307,21 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 					al_draw_rotated_bitmap(imagem->parede[5], 35, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
 				}
 
-				// Falta função para desenhar Parede G (Usada no centro do mapa - 4)
+				if(mapa[iMenos][j] == 4 && mapa[iMais][j] == 4 && mapa[i][jMenos] != 4 && mapa[i][jMais] != 4){
+					// Parede G Vertical
+					if(j < 10){
+                        al_draw_rotated_bitmap(imagem->parede[6], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
+					}else{
+                        al_draw_rotated_bitmap(imagem->parede[6], 35, 35, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+					}
+				}else if(mapa[iMenos][j] != 4 && mapa[iMais][j] != 4 && mapa[i][jMenos] == 4 && mapa[i][jMais] == 4){
+					// Parede G Horizontal
+					if(i < 10){
+                        al_draw_rotated_bitmap(imagem->parede[6], 0, 35, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+					}else{
+                        al_draw_rotated_bitmap(imagem->parede[6], 35, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
+					}
+				}
 
                 break;
             case 5:
