@@ -32,6 +32,9 @@ typedef struct personagem
     int vidas;
     int pontos;
 
+    ALLEGRO_BITMAP *spriteVida;
+    ALLEGRO_BITMAP *spritePontos;
+    ALLEGRO_BITMAP *spriteMoldura;
     ALLEGRO_BITMAP *sprite;
 }PERSONAGEM;
 
@@ -60,6 +63,7 @@ int main(void)
     jogador.linha = 11;
     jogador.coluna = 10;
     jogador.pontos = 0;
+    jogador.vidas = 1;
 
     // Tamanho da tela
     int largura = 1024;
@@ -99,10 +103,7 @@ int main(void)
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
     ALLEGRO_TIMER *timer = NULL;
-
-    ALLEGRO_BITMAP *bloco[3];
-    ALLEGRO_BITMAP *parede[7];
-    ALLEGRO_BITMAP *sprite;
+    ALLEGRO_FONT *fonte = NULL;
 
     // Testa a inicialização do Allegro
     if(!al_init())
@@ -117,6 +118,18 @@ int main(void)
     al_init_primitives_addon();
     al_install_keyboard();
     al_init_image_addon();
+    al_init_font_addon();
+    al_init_ttf_addon();
+    fonte = al_load_ttf_font("8-bit.ttf",72,0 );
+
+
+   if (!fonte){
+      fprintf(stderr, "Could not load '8-bit.ttf'.\n");
+      return -1;
+   }
+
+   al_clear_to_color(al_map_rgb(50,10,70));
+   al_draw_text(fonte, al_map_rgb(255,0,255), 40, 40, 0, "Your Text Here!");
 
     imagem.bloco[0] = al_load_bitmap("Sprites/Blocos/BlocoA.bmp");
     imagem.bloco[1] = al_load_bitmap("Sprites/Blocos/BlocoB.bmp");
@@ -131,6 +144,10 @@ int main(void)
     imagem.parede[6] = al_load_bitmap("Sprites/Paredes/ParedeG.bmp");
 
     jogador.sprite = al_load_bitmap("Sprites/Personagem/Personagem.bmp");
+
+    jogador.spriteVida = al_load_bitmap("Sprites/Icones/Vida.bmp");
+    jogador.spritePontos = al_load_bitmap("Sprites/Icones/Ponto.bmp");
+    jogador.spriteMoldura = al_load_bitmap("Sprites/Icones/MolduraPonto.bmp");
 
     event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);
@@ -208,7 +225,27 @@ int main(void)
 
 void desenhaJogador(PERSONAGEM *jogador)
 {
+    int i;
+
+    // Desenha o Jogador
     al_draw_bitmap(jogador->sprite, TAMANHO_BLOCO * jogador->coluna + X_MAPA, TAMANHO_BLOCO * jogador->linha + Y_MAPA, 0);
+
+    // Mostra a quantidade de vidas de forma gráfica
+    for(i = 0; i < jogador->vidas; i++){
+        al_draw_bitmap(jogador->spriteVida, 665 + X_MAPA - (i * TAMANHO_BLOCO), 665 + Y_MAPA, 0);
+    }
+
+    // Desenha a moldura para a barra de pontos
+    al_draw_bitmap(jogador->spriteMoldura, TAMANHO_BLOCO + X_MAPA, 665 + Y_MAPA, 0);
+
+    // Mostra a quantidade de pontos de forma gráfica
+    for(i = 0; i < jogador->pontos; i++){
+        if(jogador->pontos > 30){
+            jogador->pontos = 0;
+        }
+
+        al_draw_bitmap(jogador->spritePontos, 40 + X_MAPA + (i * 5), 670 + Y_MAPA, 0);
+    }
 }
 
 // Função que desenha o Mapa na Tela
@@ -412,6 +449,11 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
     if(mapa[jogador->linha][jogador->coluna] == 1){
         mapa[jogador->linha][jogador->coluna] = 0;
         jogador->pontos++;
+    }
+
+    if(mapa[jogador->linha][jogador->coluna] == 2){
+        mapa[jogador->linha][jogador->coluna] = 0;
+        jogador->pontos += 10;
     }
 }
 
