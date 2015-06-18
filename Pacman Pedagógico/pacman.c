@@ -4,6 +4,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 // Outras bibliotecas
 #include <stdio.h>
@@ -26,6 +28,8 @@ typedef struct personagem
     int coluna;
     int linhaAnt;
     int colunaAnt;
+
+    int vidas;
     int pontos;
 
     ALLEGRO_BITMAP *sprite;
@@ -39,8 +43,8 @@ typedef struct imagem
 
 // Declaração de funções
 void desenhaJogador(PERSONAGEM *jogador);
-void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido);
 void desabilitaTeclas(bool keys[]);
+void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido);
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
 
 int main(void)
@@ -105,7 +109,7 @@ int main(void)
         return -1;
 
     // Cria e testa o Display
-    //al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+    al_set_new_display_flags(ALLEGRO_FULLSCREEN);
     display = al_create_display(largura, altura);
     if(!display)
         return -1;
@@ -211,9 +215,8 @@ void desenhaJogador(PERSONAGEM *jogador)
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 {
     int i, j;
-    int posAtualX = 144;
-    int posAtualY = 51;
-    int blockSize = 35;
+    int posAtualX = X_MAPA;
+    int posAtualY = Y_MAPA;
 
     for(i = 0; i < 19; i++){
         for(j = 0; j < 21; j++){
@@ -226,7 +229,7 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
             switch(mapa[i][j]){
             case 0:
 				// Espaço em branco
-                al_draw_filled_rectangle(posAtualX, posAtualY, posAtualX + blockSize, posAtualY + blockSize, al_map_rgb(255, 255, 255));
+                al_draw_filled_rectangle(posAtualX, posAtualY, posAtualX + TAMANHO_BLOCO, posAtualY + TAMANHO_BLOCO, al_map_rgb(255, 255, 255));
                 break;
             case 1:
                 // Bloco A
@@ -243,7 +246,7 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 					al_draw_rotated_bitmap(imagem->parede[0], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] != 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] == 3){
 					// Parede A + 90º
-					al_draw_rotated_bitmap(imagem->parede[0], 0, 35, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[0], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
 				}
 
 				// Desenha as Paredes B
@@ -252,13 +255,13 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 					al_draw_rotated_bitmap(imagem->parede[1], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] != 3 && mapa[iMais][j] == 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] != 3){
 					// Parede B + 90º
-					al_draw_rotated_bitmap(imagem->parede[1], 0, 35, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[1], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] == 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] != 3){
 					// Parede B + 180º
-					al_draw_rotated_bitmap(imagem->parede[1], 35, 35, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[1], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] == 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] == 3){
 					// Parede B + 270º
-					al_draw_rotated_bitmap(imagem->parede[1], 35, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[1], TAMANHO_BLOCO, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
 				}
 
 				// Desenha as Paredes C
@@ -267,13 +270,13 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 					al_draw_rotated_bitmap(imagem->parede[2], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] != 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] != 3){
 					// Parede C + 90º
-					al_draw_rotated_bitmap(imagem->parede[2], 0, 35, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[2], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] == 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] != 3){
 					// Parede C + 180º
-					al_draw_rotated_bitmap(imagem->parede[2], 35, 35, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[2], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] != 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] == 3){
 					// Parede C + 270º
-					al_draw_rotated_bitmap(imagem->parede[2], 35, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[2], TAMANHO_BLOCO, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
 				}
 
 				// Desenha as Paredes D
@@ -282,7 +285,7 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 					al_draw_rotated_bitmap(imagem->parede[3], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
 				}else if(mapa[iMais][j] == 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] == 3){
 					// Parede D + 180º
-					al_draw_rotated_bitmap(imagem->parede[3], 35, 35, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[3], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
 				}
 
 				// Desenha as Paredes E
@@ -298,10 +301,10 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 					al_draw_rotated_bitmap(imagem->parede[5], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] != 4 && mapa[iMais][j] == 4 && mapa[i][jMenos] == 4 && mapa[i][jMais] != 4){
 					// Parede F + 90º
-					al_draw_rotated_bitmap(imagem->parede[5], 0, 35, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[5], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] == 4 && mapa[iMais][j] != 4 && mapa[i][jMenos] == 4 && mapa[i][jMais] != 4){
 					// Parede F + 180º
-					al_draw_rotated_bitmap(imagem->parede[5], 35, 35, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->parede[5], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
 				}else if(mapa[iMenos][j] == 4 && mapa[iMais][j] != 4 && mapa[i][jMenos] != 4 && mapa[i][jMais] == 4){
 					// Parede F + 270º
 					al_draw_rotated_bitmap(imagem->parede[5], 35, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
@@ -312,14 +315,14 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 					if(j < 10){
                         al_draw_rotated_bitmap(imagem->parede[6], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
 					}else{
-                        al_draw_rotated_bitmap(imagem->parede[6], 35, 35, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+                        al_draw_rotated_bitmap(imagem->parede[6], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
 					}
 				}else if(mapa[iMenos][j] != 4 && mapa[iMais][j] != 4 && mapa[i][jMenos] == 4 && mapa[i][jMais] == 4){
 					// Parede G Horizontal
 					if(i < 10){
-                        al_draw_rotated_bitmap(imagem->parede[6], 0, 35, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+                        al_draw_rotated_bitmap(imagem->parede[6], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
 					}else{
-                        al_draw_rotated_bitmap(imagem->parede[6], 35, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
+                        al_draw_rotated_bitmap(imagem->parede[6], TAMANHO_BLOCO, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
 					}
 				}
 
@@ -330,14 +333,14 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 					al_draw_rotated_bitmap(imagem->bloco[2], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
 				}else{
 					// Seta + 180º
-					al_draw_rotated_bitmap(imagem->bloco[2], 35, 35, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+					al_draw_rotated_bitmap(imagem->bloco[2], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
 				}
                 break;
             }
-            posAtualX += blockSize;
+            posAtualX += TAMANHO_BLOCO;
         }
-        posAtualX = 144;
-        posAtualY += blockSize;
+        posAtualX = X_MAPA;
+        posAtualY += TAMANHO_BLOCO;
     }
 }
 
@@ -358,7 +361,6 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
         if(jogador->linha == -1){
             jogador->linha = 18;
         }
-
         break;
     case 'D':
         jogador->linha++;
@@ -373,7 +375,6 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
         if(jogador->linha == 19){
             jogador->linha = 0;
         }
-
         break;
     case 'L':
         jogador->coluna--;
@@ -389,7 +390,6 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
         if(jogador->coluna == -1){
             jogador->coluna = 20;
         }
-
         break;
     case 'R':
         jogador->coluna++;
@@ -412,8 +412,6 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
     if(mapa[jogador->linha][jogador->coluna] == 1){
         mapa[jogador->linha][jogador->coluna] = 0;
         jogador->pontos++;
-        system("cls");
-        printf("%d pontos!\n", jogador->pontos);
     }
 }
 
