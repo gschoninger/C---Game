@@ -38,6 +38,9 @@ typedef struct personagem
     int pontos;
     int pontostotal;
 
+    ALLEGRO_BITMAP *spriteVida;
+    ALLEGRO_BITMAP *spritePontos;
+    ALLEGRO_BITMAP *spriteMoldura;
     ALLEGRO_BITMAP *sprite;
 } PERSONAGEM;
 
@@ -57,7 +60,11 @@ typedef struct imagem
 } IMAGEM;
 
 // Declaração de funções
+<<<<<<< HEAD
 void desenhaJogador(PERSONAGEM *jogador, INFO *info);
+=======
+void desenhaJogador(PERSONAGEM *jogador);
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
 void desabilitaTeclas(bool keys[]);
 void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido);
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
@@ -77,8 +84,12 @@ int main(void)
     jogador.linha = 11;
     jogador.coluna = 10;
     jogador.pontos = 0;
+<<<<<<< HEAD
     jogador.pontostotal = 0;
     jogador.vidas = 3;
+=======
+    jogador.vidas = 1;
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
 
     // Tamanho da tela
     int largura = TELA_X;
@@ -119,6 +130,10 @@ int main(void)
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
     ALLEGRO_TIMER *timer = NULL;
+<<<<<<< HEAD
+=======
+    ALLEGRO_FONT *fonte = NULL;
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
 
     // Testa a inicialização do Allegro
     if(!al_init())
@@ -135,7 +150,20 @@ int main(void)
     al_init_image_addon();
     al_init_font_addon();
     al_init_ttf_addon();
+<<<<<<< HEAD
 
+=======
+    fonte = al_load_ttf_font("8-bit.ttf",72,0 );
+
+
+   if (!fonte){
+      fprintf(stderr, "Could not load '8-bit.ttf'.\n");
+      return -1;
+   }
+
+   al_clear_to_color(al_map_rgb(50,10,70));
+   al_draw_text(fonte, al_map_rgb(255,0,255), 40, 40, 0, "Your Text Here!");
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
 
     imagem.bloco[0] = al_load_bitmap("Sprites/Blocos/BlocoA.bmp");
     imagem.bloco[1] = al_load_bitmap("Sprites/Blocos/BlocoB.bmp");
@@ -151,6 +179,7 @@ int main(void)
 
     jogador.sprite = al_load_bitmap("Sprites/Personagem/Personagem.bmp");
 
+<<<<<<< HEAD
     info.spriteVida = al_load_bitmap("Sprites/Icones/Vida.bmp");
     info.spritePontos = al_load_bitmap("Sprites/Icones/Ponto.bmp");
     info.spriteMoldura = al_load_bitmap("Sprites/Icones/MolduraPonto.bmp");
@@ -158,6 +187,11 @@ int main(void)
     info.fonte[1] = al_load_ttf_font("Fontes/arc-classic.ttf", 28, 0);
     info.fonte[2] = al_load_ttf_font("Fontes/presstart.ttf", 18, 0); // Fonte Tela de Inicio
     info.fonte[3] = al_load_ttf_font("Fontes/bit-led.ttf", 25, 0); // Fonte Atual tela do Jogo
+=======
+    jogador.spriteVida = al_load_bitmap("Sprites/Icones/Vida.bmp");
+    jogador.spritePontos = al_load_bitmap("Sprites/Icones/Ponto.bmp");
+    jogador.spriteMoldura = al_load_bitmap("Sprites/Icones/MolduraPonto.bmp");
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
 
     event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);
@@ -254,6 +288,7 @@ int main(void)
 void desenhaJogador(PERSONAGEM *jogador, INFO *info)
 {
     int i;
+<<<<<<< HEAD
     // Desenha total de pontos
 
     if (!info->fonte)
@@ -264,11 +299,14 @@ void desenhaJogador(PERSONAGEM *jogador, INFO *info)
 
     al_draw_textf(info->fonte[3], al_map_rgb(50,10,70), 144, 28, 0, "Total de Pontos  %d", jogador->pontostotal);
 
+=======
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
 
     // Desenha o Jogador
     al_draw_bitmap(jogador->sprite, TAMANHO_BLOCO * jogador->coluna + X_MAPA, TAMANHO_BLOCO * jogador->linha + Y_MAPA, 0);
 
     // Mostra a quantidade de vidas de forma gráfica
+<<<<<<< HEAD
     for(i = 0; i < jogador->vidas; i++)
     {
         al_draw_bitmap(info->spriteVida, 665 + X_MAPA - (i * TAMANHO_BLOCO), 673 + Y_MAPA, 0);
@@ -286,6 +324,22 @@ void desenhaJogador(PERSONAGEM *jogador, INFO *info)
         }
 
         al_draw_bitmap(info->spritePontos, 40 + X_MAPA + (i * 5), 678 + Y_MAPA, 0);
+=======
+    for(i = 0; i < jogador->vidas; i++){
+        al_draw_bitmap(jogador->spriteVida, 665 + X_MAPA - (i * TAMANHO_BLOCO), 665 + Y_MAPA, 0);
+    }
+
+    // Desenha a moldura para a barra de pontos
+    al_draw_bitmap(jogador->spriteMoldura, TAMANHO_BLOCO + X_MAPA, 665 + Y_MAPA, 0);
+
+    // Mostra a quantidade de pontos de forma gráfica
+    for(i = 0; i < jogador->pontos; i++){
+        if(jogador->pontos > 30){
+            jogador->pontos = 0;
+        }
+
+        al_draw_bitmap(jogador->spritePontos, 40 + X_MAPA + (i * 5), 670 + Y_MAPA, 0);
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
     }
 }
 
@@ -309,7 +363,11 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
             switch(mapa[i][j])
             {
             case 0:
+<<<<<<< HEAD
                 // Espaço em branco
+=======
+				// Espaço em branco
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
                 al_draw_filled_rectangle(posAtualX, posAtualY, posAtualX + TAMANHO_BLOCO, posAtualY + TAMANHO_BLOCO, al_map_rgb(255, 255, 255));
                 break;
             case 1:
@@ -321,6 +379,7 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
                 al_draw_rotated_bitmap(imagem->bloco[1], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
                 break;
             case 3:
+<<<<<<< HEAD
                 // Desenha as Paredes A
                 if(mapa[iMenos][j] == 3 && mapa[iMais][j] == 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] != 3)
                 {
@@ -456,6 +515,103 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
                     // Seta + 180º
                     al_draw_rotated_bitmap(imagem->bloco[2], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
                 }
+=======
+				// Desenha as Paredes A
+				if(mapa[iMenos][j] == 3 && mapa[iMais][j] == 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] != 3){
+					// Parede A
+					al_draw_rotated_bitmap(imagem->parede[0], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] != 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] == 3){
+					// Parede A + 90º
+					al_draw_rotated_bitmap(imagem->parede[0], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+				}
+
+				// Desenha as Paredes B
+				if(mapa[iMenos][j] != 3 && mapa[iMais][j] == 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] == 3){
+					// Parede B
+					al_draw_rotated_bitmap(imagem->parede[1], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] != 3 && mapa[iMais][j] == 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] != 3){
+					// Parede B + 90º
+					al_draw_rotated_bitmap(imagem->parede[1], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] == 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] != 3){
+					// Parede B + 180º
+					al_draw_rotated_bitmap(imagem->parede[1], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] == 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] == 3){
+					// Parede B + 270º
+					al_draw_rotated_bitmap(imagem->parede[1], TAMANHO_BLOCO, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
+				}
+
+				// Desenha as Paredes C
+				if(mapa[iMenos][j] != 3 && mapa[iMais][j] == 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] != 3){
+					// Parede C
+					al_draw_rotated_bitmap(imagem->parede[2], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] != 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] != 3){
+					// Parede C + 90º
+					al_draw_rotated_bitmap(imagem->parede[2], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] == 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] != 3){
+					// Parede C + 180º
+					al_draw_rotated_bitmap(imagem->parede[2], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] != 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] == 3){
+					// Parede C + 270º
+					al_draw_rotated_bitmap(imagem->parede[2], TAMANHO_BLOCO, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
+				}
+
+				// Desenha as Paredes D
+				if(mapa[iMenos][j] == 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] == 3){
+					// Parede Dº
+					al_draw_rotated_bitmap(imagem->parede[3], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
+				}else if(mapa[iMais][j] == 3 && mapa[i][jMenos] == 3 && mapa[i][jMais] == 3){
+					// Parede D + 180º
+					al_draw_rotated_bitmap(imagem->parede[3], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+				}
+
+				// Desenha as Paredes E
+                if(mapa[iMenos][j] != 3 && mapa[iMais][j] != 3 && mapa[i][jMenos] != 3 && mapa[i][jMais] != 3){
+					// Parede E
+					al_draw_rotated_bitmap(imagem->parede[4], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
+				}
+                break;
+            case 4:
+				// Desenha as Paredes F
+				if(mapa[iMenos][j] != 4 && mapa[iMais][j] == 4 && mapa[i][jMenos] != 4 && mapa[i][jMais] == 4){
+					// Parede F
+					al_draw_rotated_bitmap(imagem->parede[5], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] != 4 && mapa[iMais][j] == 4 && mapa[i][jMenos] == 4 && mapa[i][jMais] != 4){
+					// Parede F + 90º
+					al_draw_rotated_bitmap(imagem->parede[5], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] == 4 && mapa[iMais][j] != 4 && mapa[i][jMenos] == 4 && mapa[i][jMais] != 4){
+					// Parede F + 180º
+					al_draw_rotated_bitmap(imagem->parede[5], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+				}else if(mapa[iMenos][j] == 4 && mapa[iMais][j] != 4 && mapa[i][jMenos] != 4 && mapa[i][jMais] == 4){
+					// Parede F + 270º
+					al_draw_rotated_bitmap(imagem->parede[5], 35, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
+				}
+
+				if(mapa[iMenos][j] == 4 && mapa[iMais][j] == 4 && mapa[i][jMenos] != 4 && mapa[i][jMais] != 4){
+					// Parede G Vertical
+					if(j < 10){
+                        al_draw_rotated_bitmap(imagem->parede[6], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
+					}else{
+                        al_draw_rotated_bitmap(imagem->parede[6], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+					}
+				}else if(mapa[iMenos][j] != 4 && mapa[iMais][j] != 4 && mapa[i][jMenos] == 4 && mapa[i][jMais] == 4){
+					// Parede G Horizontal
+					if(i < 10){
+                        al_draw_rotated_bitmap(imagem->parede[6], 0, TAMANHO_BLOCO, posAtualX, posAtualY, 90 * M_PI / 180, 0);
+					}else{
+                        al_draw_rotated_bitmap(imagem->parede[6], TAMANHO_BLOCO, 0, posAtualX, posAtualY, 270 * M_PI / 180, 0);
+					}
+				}
+
+                break;
+            case 5:
+                if(j < 10){
+					// Seta
+					al_draw_rotated_bitmap(imagem->bloco[2], 0, 0, posAtualX, posAtualY, 0 * M_PI / 180, 0);
+				}else{
+					// Seta + 180º
+					al_draw_rotated_bitmap(imagem->bloco[2], TAMANHO_BLOCO, TAMANHO_BLOCO, posAtualX, posAtualY, 180 * M_PI / 180, 0);
+				}
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
                 break;
             }
             posAtualX += TAMANHO_BLOCO;
@@ -551,6 +707,7 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
     {
         mapa[jogador->linha][jogador->coluna] = 0;
         jogador->pontos++;
+<<<<<<< HEAD
         jogador->pontostotal++;
     }
 
@@ -560,6 +717,13 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
         mapa[jogador->linha][jogador->coluna] = 0;
         jogador->pontos += 10;
         jogador->pontostotal += 10;
+=======
+    }
+
+    if(mapa[jogador->linha][jogador->coluna] == 2){
+        mapa[jogador->linha][jogador->coluna] = 0;
+        jogador->pontos += 10;
+>>>>>>> cee3d9871dccb397a0ee959382730fefa4d690f7
     }
 }
 
