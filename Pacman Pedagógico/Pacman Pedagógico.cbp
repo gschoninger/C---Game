@@ -30,7 +30,12 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedagógico/" />
 		</Compiler>
+		<Linker>
+			<Add option="-l allegro_image" />
+			<Add directory="/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedagógico/" />
+		</Linker>
 		<Unit filename="pacman.c">
 			<Option compilerVar="CC" />
 		</Unit>
