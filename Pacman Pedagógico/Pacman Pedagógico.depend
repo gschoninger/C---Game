@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1434667298 source:c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\pacman.c
+1434728127 source:c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\pacman.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
@@ -8,7 +8,7 @@
 	<stdio.h>
 	<math.h>
 
-1434555946 
+1434651259 
 
 1434651259 source:/home/gschoninger/Dropbox/C---Game/Pacman Pedag贸gico/pacman.c
 	<allegro5/allegro.h>
@@ -24,12 +24,30 @@
 	<stdio.h>
 	<math.h>
 
-1434638938 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/pacman.c
+1434739611 source:/home/gschoninger/Dropbox/C---Game/Pacman Pedag贸gico/pacman.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
-	<allegro5/allegro5.h>
-	<allegro5/timer.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<stdio.h>
+	<math.h>
+
+1434739611 source:/home/gschoninger/Desktop/C---Game/Pacman Pedag贸gico/pacman.c
+	<allegro5/allegro.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<stdio.h>
+	<math.h>
+
+1434745532 source:/home/gschoninger/Documents/Pacman Pedag贸gico/pacman.c
+	<allegro5/allegro.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
 	<stdio.h>
 	<math.h>
 
