@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1434728127 source:c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\pacman.c
+1435090685 source:c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\pacman.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
@@ -10,7 +10,7 @@
 
 1434651259 
 
-1434651259 source:/home/gschoninger/Dropbox/C---Game/Pacman PedagÃ³gico/pacman.c
+1434739611 source:/home/gschoninger/Dropbox/C---Game/Pacman PedagÃ³gico/pacman.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
@@ -23,8 +23,6 @@
 	<allegro5/allegro_ttf.h>
 	<stdio.h>
 	<math.h>
-
-1434739611 source:/home/gschoninger/Dropbox/C---Game/Pacman PedagÃ³gico/pacman.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
