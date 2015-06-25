@@ -42,7 +42,8 @@ typedef struct personagem
     int colunaAnt;
 
     int vidas;
-    int pontos;
+    int pontosParcial;
+    int pontosTotal;
 
     ALLEGRO_BITMAP *sprite;
 }PERSONAGEM;
@@ -92,7 +93,8 @@ int main(void)
     // Posição inicial do personagem
     jogador.linha = 11;
     jogador.coluna = 10;
-    jogador.pontos = 0;
+    jogador.pontosParcial = 0;
+    jogador.pontosTotal = 0;
     jogador.vidas = 3;
 
     // Tamanho da tela
@@ -328,7 +330,7 @@ void desenhaJogador(PERSONAGEM *jogador, INFO *info)
 {
     int i;
 
-    al_draw_textf(info->fonte[3], al_map_rgb(50,10,70), 144, 28, 0, "Total de Pontos  %d", jogador->pontos);
+    al_draw_textf(info->fonte[3], al_map_rgb(50,10,70), 144, 28, 0, "Total de Pontos  %d", jogador->pontosTotal);
 
     // Desenha o Jogador
     al_draw_bitmap(jogador->sprite, TAMANHO_BLOCO * jogador->coluna + X_MAPA, TAMANHO_BLOCO * jogador->linha + Y_MAPA, 0);
@@ -342,15 +344,15 @@ void desenhaJogador(PERSONAGEM *jogador, INFO *info)
     al_draw_bitmap(info->spriteMoldura, TAMANHO_BLOCO + X_MAPA, 673 + Y_MAPA, 0);
 
     // Mostra a quantidade de pontos de forma gráfica
-    for(i = 0; i < jogador->pontos; i++){
-        if(jogador->pontos > 30){
-            jogador->pontos -= 30;
+    for(i = 0; i < jogador->pontosParcial; i++){
+        if(jogador->pontosParcial > 30){
+            jogador->pontosParcial -= 30;
         }
 
         al_draw_bitmap(info->spritePontos, 40 + X_MAPA + (i * 5), 678 + Y_MAPA, 0);
     }
 
-    al_draw_textf(info->fonte[3], al_map_rgb(50,10,70), 144, 28, 0, "Total de Pontos  %d", jogador->pontos);
+    al_draw_textf(info->fonte[3], al_map_rgb(50,10,70), 144, 28, 0, "Total de Pontos  %d", jogador->pontosTotal);
 }
 
 // Função que desenha o Mapa na Tela
@@ -553,13 +555,15 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
     // Soma pontos +1
     if(mapa[jogador->linha][jogador->coluna] == 1){
         mapa[jogador->linha][jogador->coluna] = 0;
-        jogador->pontos++;
+        jogador->pontosParcial++;
+        jogador->pontosTotal++;
     }
 
     // Soma pontos +10
     if(mapa[jogador->linha][jogador->coluna] == 2){
         mapa[jogador->linha][jogador->coluna] = 0;
-        jogador->pontos += 10;
+        jogador->pontosParcial += 10;
+        jogador->pontosTotal += 10;
     }
 }
 

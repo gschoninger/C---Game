@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1435090685 source:c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\pacman.c
+1435090755 source:c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\pacman.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
