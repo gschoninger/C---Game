@@ -1,4 +1,4 @@
-// Versão TELAS
+// Versão PONTOS
 // Desenvolvido por Gabriel Schöninger e Vitor Goulart
 
 // Bibliotecas Allegro
@@ -77,7 +77,9 @@ typedef struct telas
 void desenhaJogador(PERSONAGEM *jogador, INFO *info);
 void desabilitaTeclas(bool keys[]);
 void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido);
+void moveInimigo(PERSONAGEM inimigo[], PERSONAGEM *jogador, int inimigoAtual, int mapa[COL][LIN]);
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
+float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM inimigo[], int inimigoAtual);
 
 int main(void)
 {
@@ -102,6 +104,8 @@ int main(void)
     int altura = TELA_Y;
 
     int estado = 0;
+
+    int inimigoAtual = 0;
 
     // Matriz do mapa
                         // 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
@@ -567,6 +571,67 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
     }
 }
 
+// Função que movimenta o Inimigo
+void moveInimigo(PERSONAGEM inimigo[], PERSONAGEM *jogador, int inimigoAtual, int mapa[COL][LIN])
+{
+    float distancia[4];
+    float menorDistancia = 0;
+    int menorSentido = 0;
+    int i;
+
+    jogador->linha--;
+
+    if(mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 3 && mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 4){
+        distancia[0] = calculaDistancia(&jogador, inimigo, inimigoAtual);
+    }
+
+    jogador->linha += 2;
+
+    if(mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 3 && mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 4){
+        distancia[1] = calculaDistancia(&jogador, inimigo, inimigoAtual);
+    }
+
+    jogador->linha--;
+    jogador->coluna--;
+
+    if(mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 3 && mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 4){
+        distancia[2] = calculaDistancia(&jogador, inimigo, inimigoAtual);
+    }
+
+    jogador->coluna += 2;
+
+    if(mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 3 && mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 4){
+        distancia[3] = calculaDistancia(&jogador, inimigo, inimigoAtual);
+    }
+
+    jogador->coluna--;
+
+    menorDistancia = distancia[0];
+
+    for(i = 0; i < 4; i++){
+        if(distancia[i] <= menorDistancia){
+            menorDistancia = distancia[i];
+            menorSentido = i;
+        }
+    }
+
+    switch(menorSentido){
+    case 0:
+        inimigo[inimigoAtual].linha--;
+        break;
+    case 1:
+        inimigo[inimigoAtual].linha++;
+        break;
+    case 2:
+        inimigo[inimigoAtual].coluna--;
+        break;
+    case 3:
+        inimigo[inimigoAtual].coluna++;
+        break;
+    }
+
+}
+
 // Função que solta as Teclas pressionadas
 void desabilitaTeclas(bool keys[])
 {
@@ -575,4 +640,10 @@ void desabilitaTeclas(bool keys[])
     for(i = 0; i < 7; i++){
         keys[i] = false;
     }
+}
+
+float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM inimigo[], int inimigoAtual)
+{
+    float distancia = sqrt(pow((jogador->coluna - inimigo[inimigoAtual].coluna), 2) + pow((jogador->linha - inimigo[inimigoAtual].linha), 2));
+    return distancia;
 }
