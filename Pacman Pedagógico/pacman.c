@@ -18,6 +18,8 @@
 
 #define TAMANHO_BLOCO 35
 
+#define VELOCIDADE_PREDADOR 60/4
+
 #define X_MAPA 144
 #define Y_MAPA 51
 
@@ -91,11 +93,13 @@ int main(void)
     int estado = 0;
 
     int predadorAtual = 0;
+    int numeroPredador = 4;
+    int numeroPresa = 0;
 
     // Criação da Estrutura Boneco
     PERSONAGEM jogador;
-    PERSONAGEM predador[10];
-    PERSONAGEM presa[10];
+    PERSONAGEM predador[numeroPredador];
+    PERSONAGEM presa[numeroPresa];
 
     IMAGEM imagem;
     INFO info;
@@ -108,8 +112,14 @@ int main(void)
     jogador.pontosTotal = 0;
     jogador.vidas = 3;
 
-    predador[predadorAtual].linha = 1;
-    predador[predadorAtual].coluna = 1;
+    predador[0].linha = 1;
+    predador[0].coluna = 1;
+    predador[1].linha = 1;
+    predador[1].coluna = 19;
+    predador[2].linha = 17;
+    predador[2].coluna = 1;
+    predador[3].linha = 17;
+    predador[3].coluna = 19;
 
     // Matriz do mapa
                         // 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
@@ -139,6 +149,7 @@ int main(void)
 
     // Contagem de quadros por segundo
     int FPS = 60;
+    int contaTimer = 0;
 
     // Vetor das Teclas pressionadas
     bool keys[7] = {false, false, false, false,false, false, false};
@@ -153,7 +164,7 @@ int main(void)
         return -1;
 
     // Cria e testa o Display
-    //al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+    al_set_new_display_flags(ALLEGRO_FULLSCREEN);
     display = al_create_display(largura, altura);
     if(!display)
         return -1;
@@ -177,7 +188,10 @@ int main(void)
     imagem.parede[6] = al_load_bitmap("Sprites/Paredes/ParedeG.bmp");
 
     jogador.sprite = al_load_bitmap("Sprites/Jogador/Jogador.bmp");
-    predador[predadorAtual].sprite = al_load_bitmap("Sprites/Predador/Predador.bmp");
+
+    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
+        predador[predadorAtual].sprite = al_load_bitmap("Sprites/Predador/Predador.bmp");
+    }
 
     info.spriteVida = al_load_bitmap("Sprites/Icones/Vida.bmp");
     info.spritePontos = al_load_bitmap("Sprites/Icones/Ponto.bmp");
@@ -267,7 +281,6 @@ int main(void)
                 // Jogo rodando
                 if(keys[UP]){
                     moveJogador(&jogador, mapa, 'U');
-                    movePredador(predador, &jogador, predadorAtual, mapa);
                 }
 
                 if(keys[DOWN])
@@ -287,7 +300,20 @@ int main(void)
 
                 desenhaMapa(mapa, &imagem);
                 desenhaJogador(&jogador, &info);
-                desenhaPredador(predador, predadorAtual);
+
+                for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
+                    desenhaPredador(predador, predadorAtual);
+                }
+
+                contaTimer++;
+
+                if(contaTimer == VELOCIDADE_PREDADOR){
+                    contaTimer = 0;
+                    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
+                        movePredador(predador, &jogador, predadorAtual, mapa);
+                    }
+                }
+
                 break;
             case 3:
                 // Pausa
@@ -599,34 +625,34 @@ void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual,
     predador[predadorAtual].linha--;
 
     if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4){
-        distancia[0] = calculaDistancia(&jogador, predador, predadorAtual);
+        distancia[0] = calculaDistancia(jogador, predador, predadorAtual);
     }else{
-        distancia[0] = 0;
+        distancia[0] = 99;
     }
 
     predador[predadorAtual].linha += 2;
 
     if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4){
-        distancia[1] = calculaDistancia(&jogador, predador, predadorAtual);
+        distancia[1] = calculaDistancia(jogador, predador, predadorAtual);
     }else{
-        distancia[1] = 0;
+        distancia[1] = 99;
     }
 
     predador[predadorAtual].linha--;
     predador[predadorAtual].coluna--;
 
     if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4){
-        distancia[2] = calculaDistancia(&jogador, predador, predadorAtual);
+        distancia[2] = calculaDistancia(jogador, predador, predadorAtual);
     }else{
-        distancia[2] = 0;
+        distancia[2] = 99;
     }
 
     predador[predadorAtual].coluna += 2;
 
     if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4){
-        distancia[3] = calculaDistancia(&jogador, predador, predadorAtual);
+        distancia[3] = calculaDistancia(jogador, predador, predadorAtual);
     }else{
-        distancia[3] = 0;
+        distancia[3] = 99;
     }
 
     predador[predadorAtual].coluna--;
@@ -634,10 +660,9 @@ void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual,
     menorDistancia = distancia[0];
 
     for(i = 0; i < 4; i++){
-        if(distancia[i] <= menorDistancia && distancia[i] != 0){
+        if(distancia[i] <= menorDistancia && distancia[i] != 99){
             menorDistancia = distancia[i];
             menorSentido = i;
-            printf("Menor: %.2f\n", menorDistancia);
         }
     }
 
