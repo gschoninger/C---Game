@@ -28,8 +28,8 @@
 #define TELA_INSTRUCAO 1
 #define JOGO_RODANDO 2
 #define TELA_PAUSA 3
-#define TELA_CREDITOS 4
-#define TELA_FINAL 5
+#define TELA_FINAL 4
+#define TELA_CREDITOS 5
 
 enum KEYS{UP, DOWN, LEFT, RIGHT, ENTER, ESC, PAUSA};
 
@@ -75,14 +75,23 @@ typedef struct telas
 
 // Declaração de funções
 void desenhaJogador(PERSONAGEM *jogador, INFO *info);
+void desenhaPredador(PERSONAGEM predador[], int predadorAtual);
 void desabilitaTeclas(bool keys[]);
 void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido);
-void moveInimigo(PERSONAGEM inimigo[], PERSONAGEM *jogador, int inimigoAtual, int mapa[COL][LIN]);
+void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN]);
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
-float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM inimigo[], int inimigoAtual);
+float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM predador[], int inimigoAtual);
 
 int main(void)
 {
+    // Tamanho da tela
+    int largura = TELA_X;
+    int altura = TELA_Y;
+
+    int estado = 0;
+
+    int predadorAtual = 0;
+
     // Criação da Estrutura Boneco
     PERSONAGEM jogador;
     PERSONAGEM predador[10];
@@ -99,13 +108,8 @@ int main(void)
     jogador.pontosTotal = 0;
     jogador.vidas = 3;
 
-    // Tamanho da tela
-    int largura = TELA_X;
-    int altura = TELA_Y;
-
-    int estado = 0;
-
-    int inimigoAtual = 0;
+    predador[predadorAtual].linha = 1;
+    predador[predadorAtual].coluna = 1;
 
     // Matriz do mapa
                         // 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
@@ -149,7 +153,7 @@ int main(void)
         return -1;
 
     // Cria e testa o Display
-    al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+    //al_set_new_display_flags(ALLEGRO_FULLSCREEN);
     display = al_create_display(largura, altura);
     if(!display)
         return -1;
@@ -172,7 +176,8 @@ int main(void)
     imagem.parede[5] = al_load_bitmap("Sprites/Paredes/ParedeF.bmp");
     imagem.parede[6] = al_load_bitmap("Sprites/Paredes/ParedeG.bmp");
 
-    jogador.sprite = al_load_bitmap("Sprites/Personagem/Personagem.bmp");
+    jogador.sprite = al_load_bitmap("Sprites/Jogador/Jogador.bmp");
+    predador[predadorAtual].sprite = al_load_bitmap("Sprites/Predador/Predador.bmp");
 
     info.spriteVida = al_load_bitmap("Sprites/Icones/Vida.bmp");
     info.spritePontos = al_load_bitmap("Sprites/Icones/Ponto.bmp");
@@ -242,7 +247,7 @@ int main(void)
                 al_draw_bitmap(telas.inicial, 0, 0, 0);
 
                 if(keys[ESC])
-                    estado = TELA_FINAL;
+                    return 0;
 
                 if(keys[ENTER])
                     estado = TELA_INSTRUCAO;
@@ -252,7 +257,7 @@ int main(void)
                 al_draw_bitmap(telas.instrucao, 0, 0, 0);
 
                 if(keys[ESC])
-                    estado = TELA_FINAL;
+                    return 0;
 
                 if(keys[ENTER])
                     estado = JOGO_RODANDO;
@@ -260,8 +265,10 @@ int main(void)
                 break;
             case 2:
                 // Jogo rodando
-                if(keys[UP])
+                if(keys[UP]){
                     moveJogador(&jogador, mapa, 'U');
+                    movePredador(predador, &jogador, predadorAtual, mapa);
+                }
 
                 if(keys[DOWN])
                     moveJogador(&jogador, mapa, 'D');
@@ -273,13 +280,14 @@ int main(void)
                     moveJogador(&jogador, mapa, 'R');
 
                 if(keys[ESC])
-                    estado = TELA_CREDITOS;
+                    estado = TELA_FINAL;
 
                 if(keys[PAUSA])
                     estado = TELA_PAUSA;
 
                 desenhaMapa(mapa, &imagem);
                 desenhaJogador(&jogador, &info);
+                desenhaPredador(predador, predadorAtual);
                 break;
             case 3:
                 // Pausa
@@ -293,16 +301,19 @@ int main(void)
 
                 break;
             case 4:
-                // Créditos
-                al_draw_bitmap(telas.creditos, 0, 0, 0);
+                // Final
+                al_draw_bitmap(telas.final, 0, 0, 0);
 
                 if(keys[ENTER])
-                    estado = TELA_FINAL;
+                    estado = TELA_CREDITOS;
+
+                if(keys[ESC])
+                    return 0;
 
                 break;
             case 5:
-                // Final
-                al_draw_bitmap(telas.final, 0, 0, 0);
+                // Créditos
+                al_draw_bitmap(telas.creditos, 0, 0, 0);
 
                 if(keys[ENTER] || keys[ESC])
                     return 0;
@@ -357,6 +368,12 @@ void desenhaJogador(PERSONAGEM *jogador, INFO *info)
     }
 
     al_draw_textf(info->fonte[3], al_map_rgb(50,10,70), 144, 28, 0, "Total de Pontos  %d", jogador->pontosTotal);
+}
+
+void desenhaPredador(PERSONAGEM predador[], int predadorAtual)
+{
+    // Desenha o Predador
+    al_draw_bitmap(predador[predadorAtual].sprite, TAMANHO_BLOCO * predador[predadorAtual].coluna + X_MAPA, TAMANHO_BLOCO * predador[predadorAtual].linha + Y_MAPA, 0);
 }
 
 // Função que desenha o Mapa na Tela
@@ -572,64 +589,72 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
 }
 
 // Função que movimenta o Inimigo
-void moveInimigo(PERSONAGEM inimigo[], PERSONAGEM *jogador, int inimigoAtual, int mapa[COL][LIN])
+void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN])
 {
     float distancia[4];
     float menorDistancia = 0;
     int menorSentido = 0;
     int i;
 
-    jogador->linha--;
+    predador[predadorAtual].linha--;
 
-    if(mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 3 && mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 4){
-        distancia[0] = calculaDistancia(&jogador, inimigo, inimigoAtual);
+    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4){
+        distancia[0] = calculaDistancia(&jogador, predador, predadorAtual);
+    }else{
+        distancia[0] = 0;
     }
 
-    jogador->linha += 2;
+    predador[predadorAtual].linha += 2;
 
-    if(mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 3 && mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 4){
-        distancia[1] = calculaDistancia(&jogador, inimigo, inimigoAtual);
+    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4){
+        distancia[1] = calculaDistancia(&jogador, predador, predadorAtual);
+    }else{
+        distancia[1] = 0;
     }
 
-    jogador->linha--;
-    jogador->coluna--;
+    predador[predadorAtual].linha--;
+    predador[predadorAtual].coluna--;
 
-    if(mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 3 && mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 4){
-        distancia[2] = calculaDistancia(&jogador, inimigo, inimigoAtual);
+    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4){
+        distancia[2] = calculaDistancia(&jogador, predador, predadorAtual);
+    }else{
+        distancia[2] = 0;
     }
 
-    jogador->coluna += 2;
+    predador[predadorAtual].coluna += 2;
 
-    if(mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 3 && mapa[inimigo[inimigoAtual].linha][inimigo[inimigoAtual].coluna] != 4){
-        distancia[3] = calculaDistancia(&jogador, inimigo, inimigoAtual);
+    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4){
+        distancia[3] = calculaDistancia(&jogador, predador, predadorAtual);
+    }else{
+        distancia[3] = 0;
     }
 
-    jogador->coluna--;
+    predador[predadorAtual].coluna--;
 
     menorDistancia = distancia[0];
 
     for(i = 0; i < 4; i++){
-        if(distancia[i] <= menorDistancia){
+        if(distancia[i] <= menorDistancia && distancia[i] != 0){
             menorDistancia = distancia[i];
             menorSentido = i;
+            printf("Menor: %.2f\n", menorDistancia);
         }
     }
 
     switch(menorSentido){
     case 0:
-        inimigo[inimigoAtual].linha--;
+        predador[predadorAtual].linha--;
         break;
     case 1:
-        inimigo[inimigoAtual].linha++;
+        predador[predadorAtual].linha++;
         break;
     case 2:
-        inimigo[inimigoAtual].coluna--;
+        predador[predadorAtual].coluna--;
         break;
     case 3:
-        inimigo[inimigoAtual].coluna++;
+        predador[predadorAtual].coluna++;
         break;
     }
-
 }
 
 // Função que solta as Teclas pressionadas
@@ -642,8 +667,8 @@ void desabilitaTeclas(bool keys[])
     }
 }
 
-float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM inimigo[], int inimigoAtual)
+float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM inteligencia[], int indice)
 {
-    float distancia = sqrt(pow((jogador->coluna - inimigo[inimigoAtual].coluna), 2) + pow((jogador->linha - inimigo[inimigoAtual].linha), 2));
+    float distancia = sqrt(pow((jogador->coluna - inteligencia[indice].coluna), 2) + pow((jogador->linha - inteligencia[indice].linha), 2));
     return distancia;
 }
