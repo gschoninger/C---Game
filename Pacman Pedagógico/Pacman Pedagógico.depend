@@ -8,7 +8,7 @@
 	<stdio.h>
 	<math.h>
 
-1434651259 
+1434745532 
 
 1434739611 source:/home/gschoninger/Dropbox/C---Game/Pacman Pedagógico/pacman.c
 	<allegro5/allegro.h>
@@ -41,6 +41,15 @@
 	<math.h>
 
 1434745532 source:/home/gschoninger/Documents/Pacman Pedagógico/pacman.c
+	<allegro5/allegro.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<stdio.h>
+	<math.h>
+
+1435511305 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedagógico/pacman.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
