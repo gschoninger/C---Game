@@ -180,7 +180,7 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 }
 
 // Função que movimenta o Jogador
-void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
+void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN], char sentido, int predadorAtual)
 {
     switch(sentido){
     case 'U':
@@ -257,6 +257,16 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
         jogador->pontosParcial += 10;
         jogador->pontosTotal += 10;
     }
+        for(predadorAtual = 0; predadorAtual < 4; predadorAtual++)
+        {
+
+            if(jogador->coluna == predador[predadorAtual].coluna && jogador->linha == predador[predadorAtual].linha)
+            {
+                jogador->vidas--;
+                jogador->linha = JOGADOR_LINHA;
+                jogador->coluna = JOGADOR_COLUNA;
+            }
+        }
 }
 
 // Função que movimenta o Valentão
@@ -271,48 +281,44 @@ void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual,
         predador[predadorAtual].movimentoAnt[i] = predador[predadorAtual].movimentoAtual[i];
     }
 
-    predador[predadorAtual].linha--;
+    int predadorMenosLinha = mapa[predador[predadorAtual].linha - 1][predador[predadorAtual].coluna];
+    int predadorMaisLinha = mapa[predador[predadorAtual].linha + 1][predador[predadorAtual].coluna];
+    int predadorMenosColuna = mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna - 1];
+    int predadorMaisColuna = mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna + 1];
 
-    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 6){
-        distancia[UP] = calculaDistancia(jogador, predador, predadorAtual, mapa[COL][LIN]);
+    if(predadorMenosLinha != 3 && predadorMenosLinha != 4 && predadorMenosLinha != 6){
+        distancia[UP] = calculaDistancia(jogador, predador, predadorAtual, mapa);
         predador[predadorAtual].movimentoAtual[UP] = true;
     }else{
         distancia[UP] = 99;
         predador[predadorAtual].movimentoAtual[UP] = false;
     }
 
-    predador[predadorAtual].linha += 2;
 
-    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 6){
-        distancia[DOWN] = calculaDistancia(jogador, predador, predadorAtual, mapa[COL][LIN]);
+    if(predadorMaisLinha != 3 && predadorMaisLinha != 4 && predadorMaisLinha != 6){
+        distancia[DOWN] = calculaDistancia(jogador, predador, predadorAtual, mapa);
         predador[predadorAtual].movimentoAtual[DOWN] = true;
     }else{
         distancia[DOWN] = 99;
         predador[predadorAtual].movimentoAtual[DOWN] = false;
     }
 
-    predador[predadorAtual].linha--;
-    predador[predadorAtual].coluna--;
-
-    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 6){
-        distancia[LEFT] = calculaDistancia(jogador, predador, predadorAtual, mapa[COL][LIN]);
+    if(predadorMenosColuna != 3 && predadorMenosColuna != 4 && predadorMenosColuna != 6){
+        distancia[LEFT] = calculaDistancia(jogador, predador, predadorAtual, mapa);
         predador[predadorAtual].movimentoAtual[LEFT] = true;
     }else{
         distancia[LEFT] = 99;
         predador[predadorAtual].movimentoAtual[LEFT] = false;
     }
 
-    predador[predadorAtual].coluna += 2;
 
-    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 6){
-        distancia[RIGHT] = calculaDistancia(jogador, predador, predadorAtual, mapa[COL][LIN]);
+    if(predadorMaisColuna != 3 && predadorMaisColuna != 4 && predadorMaisColuna != 6){
+        distancia[RIGHT] = calculaDistancia(jogador, predador, predadorAtual, mapa);
         predador[predadorAtual].movimentoAtual[RIGHT] = true;
     }else{
         distancia[RIGHT] = 99;
         predador[predadorAtual].movimentoAtual[RIGHT] = false;
     }
-
-    predador[predadorAtual].coluna--;
 
     menorDistancia = distancia[0];
 
@@ -347,6 +353,16 @@ void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual,
             predador[predadorAtual].coluna++;
             break;
     }
+        for(predadorAtual = 0; predadorAtual < 4; predadorAtual++)
+        {
+
+            if(jogador->coluna == predador[predadorAtual].coluna && jogador->linha == predador[predadorAtual].linha)
+            {
+                jogador->vidas--;
+                jogador->linha = JOGADOR_LINHA;
+                jogador->coluna = JOGADOR_COLUNA;
+            }
+        }
 }
 
 // Função que solta as Teclas pressionadas

@@ -56,7 +56,7 @@
 void desenhaJogador(PERSONAGEM *jogador, INFO *info);
 void desenhaPredador(PERSONAGEM predador[], int numeroPredador);
 void desabilitaTeclas(bool keys[]);
-void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido);
+void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN], char sentido, int predadorAtual);
 void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN]);
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
 float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM predador[], int predadorAtual, int mapa[COL][LIN]);

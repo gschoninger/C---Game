@@ -1,37 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-<<<<<<< HEAD
-	<File name="pacman.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="-1" zoom_2="0">
-=======
-	<File name="defines.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
->>>>>>> 913342517e3a2f2330962f8b64b5be47c954d7c1
+	<File name="struct.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="703" topLine="19" />
-		</Cursor>
-	</File>
-	<File name="pacman.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8860" topLine="215" />
+			<Cursor1 position="196" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="engine.c" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="9225" topLine="0" />
+			<Cursor1 position="15144" topLine="317" />
 		</Cursor>
 		<Folding>
 			<Collapse line="5" />
-			<Collapse line="35" />
-			<Collapse line="180" />
-			<Collapse line="260" />
-			<Collapse line="350" />
-			<Collapse line="360" />
-			<Collapse line="366" />
+			<Collapse line="38" />
 		</Folding>
 	</File>
-	<File name="struct.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="pacman.c" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="196" topLine="2" />
+			<Cursor1 position="9248" topLine="229" />
+		</Cursor>
+	</File>
+	<File name="defines.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1195" topLine="44" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
