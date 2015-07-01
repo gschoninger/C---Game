@@ -94,7 +94,7 @@ typedef struct telas
 void desenhaJogador(PERSONAGEM *jogador, INFO *info);
 void desenhaPredador(PERSONAGEM predador[], int predadorAtual);
 void desabilitaTeclas(bool keys[]);
-void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido);
+void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN], char sentido, int predadorAtual);
 void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN]);
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
 float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM predador[], int predadorAtual, int mapa[COL][LIN]);
@@ -109,12 +109,11 @@ int main(void)
 
     int predadorAtual = 0;
     int numeroPredador = 4;
-    int numeroPresa = 0;
 
-    // Criação da Estrutura Boneco
+// Criação da Estrutura Boneco
     PERSONAGEM jogador;
     PERSONAGEM predador[numeroPredador];
-    PERSONAGEM presa[numeroPresa];
+
 
     IMAGEM imagem;
     INFO info;
@@ -136,27 +135,28 @@ int main(void)
     predador[3].linha = 17;
     predador[3].coluna = 19;
 
-    // Matriz do mapa
-                        // 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
-    int mapa[COL][LIN] = {{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},  // 0
-                          {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 1
-                          {3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3},  // 2
-                          {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},  // 3
-                          {3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3},  // 4
-                          {3, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 3},  // 5
-                          {3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3},  // 6
-                          {3, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3},  // 7
-                          {3, 3, 3, 3, 3, 1, 3, 0, 4, 4, 4, 4, 4, 0, 3, 1, 3, 3, 3, 3, 3},  // 8
-                          {5, 0, 0, 0, 0, 1, 3, 0, 4, 0, 0, 0, 4, 0, 3, 1, 0, 0, 0, 0, 5},  // 9
-                          {3, 3, 3, 3, 3, 1, 3, 0, 4, 4, 4, 4, 4, 0, 3, 1, 3, 3, 3, 3, 3},  // 10
-                          {3, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3},  // 11
-                          {3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3},  // 12
-                          {3, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 3},  // 13
-                          {3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3},  // 14
-                          {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},  // 15
-                          {3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3},  // 16
-                          {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 17
-                          {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}   // 18
+            // Matriz do mapa
+      // 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
+int mapa[COL][LIN] =
+       {{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},  // 0
+        {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 1
+        {3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3},  // 2
+        {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},  // 3
+        {3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3},  // 4
+        {3, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 3},  // 5
+        {3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3},  // 6
+        {3, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3},  // 7
+        {3, 3, 3, 3, 3, 1, 3, 0, 4, 4, 4, 4, 4, 0, 3, 1, 3, 3, 3, 3, 3},  // 8
+        {5, 0, 0, 0, 0, 1, 3, 0, 4, 0, 0, 0, 4, 0, 3, 1, 0, 0, 0, 0, 5},  // 9
+        {3, 3, 3, 3, 3, 1, 3, 0, 4, 4, 4, 4, 4, 0, 3, 1, 3, 3, 3, 3, 3},  // 10
+        {3, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3},  // 11
+        {3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3},  // 12
+        {3, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 3},  // 13
+        {3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3},  // 14
+        {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},  // 15
+        {3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3},  // 16
+        {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 17
+        {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}   // 18
     };
 
     bool done = false;
@@ -172,7 +172,7 @@ int main(void)
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
     ALLEGRO_TIMER *timer = NULL;
-    ALLEGRO_FONT *fonte = NULL;
+    ALLEGRO_FONT *fonte = al_load_ttf_font("Fontes/presstart.ttf", 18, 0);
 
     // Testa a inicialização do Allegro
     if(!al_init())
@@ -221,8 +221,12 @@ int main(void)
 
     info.fonte[0] = al_load_ttf_font("Fontes/pac.ttf", 20, 0);
     info.fonte[1] = al_load_ttf_font("Fontes/arc-classic.ttf", 28, 0);
-    info.fonte[2] = al_load_ttf_font("Fontes/presstart.ttf", 18, 0); // Fonte Tela de Inicio
+    info.fonte[2] = al_load_ttf_font("Fontes/presstart.ttf", 30, 0); // Fonte Tela de Inicio
     info.fonte[3] = al_load_ttf_font("Fontes/bit-led.ttf", 25, 0); // Fonte Atual tela do Jogo
+    info.fonte[4] = al_load_ttf_font("Fontes/presstart.ttf", 30, 0);
+    info.fonte[5] = al_load_ttf_font("Fontes/presstart.ttf", 22, 0);
+
+
 
     event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);
@@ -230,6 +234,7 @@ int main(void)
     al_register_event_source(event_queue, al_get_keyboard_event_source());
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
+
 
     al_start_timer(timer);
 
@@ -280,13 +285,15 @@ int main(void)
             {
             case 0:
                 // Início
-                al_draw_bitmap(telas.inicial, 0, 0, 0);
+                al_clear_to_color(al_map_rgb(127, 0, 255));
+                al_draw_textf(info.fonte[4], al_map_rgb(50,10,70), largura / 2,  altura / 2, ALLEGRO_ALIGN_CENTRE, "PRESS START!");
+                al_draw_textf(info.fonte[5], al_map_rgb(50,10,70), largura / 2, (altura/2) + 60, ALLEGRO_ALIGN_CENTRE, "TUTORIAL");
 
                 if(keys[ESC])
                     return 0;
 
                 if(keys[ENTER])
-                    estado = TELA_INSTRUCAO;
+                    estado = JOGO_RODANDO;
                 break;
             case 1:
                 // Instruções
@@ -303,17 +310,17 @@ int main(void)
                 // Jogo rodando
                 if(keys[UP])
                 {
-                    moveJogador(&jogador, mapa, 'U');
+                    moveJogador(&jogador, predador, mapa, 'U', predadorAtual);
                 }
 
                 if(keys[DOWN])
-                    moveJogador(&jogador, mapa, 'D');
+                    moveJogador(&jogador, predador, mapa, 'D', predadorAtual);
 
                 if(keys[LEFT])
-                    moveJogador(&jogador, mapa, 'L');
+                    moveJogador(&jogador, predador, mapa, 'L', predadorAtual);
 
                 if(keys[RIGHT])
-                    moveJogador(&jogador, mapa, 'R');
+                    moveJogador(&jogador, predador, mapa, 'R', predadorAtual);
 
                 if(keys[ESC])
                     estado = TELA_FINAL;
@@ -609,7 +616,7 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 }
 
 // Função que movimenta o Boneco
-void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
+void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN], char sentido, int predadorAtual)
 {
     switch(sentido)
     {
@@ -704,73 +711,83 @@ void moveJogador(PERSONAGEM *jogador, int mapa[COL][LIN], char sentido)
         jogador->pontosParcial += 10;
         jogador->pontosTotal += 10;
     }
+
+        for(predadorAtual = 0; predadorAtual < 4; predadorAtual++)
+        {
+
+            if(mapa[jogador->linha][jogador->coluna] == mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna])
+            {
+                jogador->vidas--;
+            }
+        }
 }
 
 // Função que movimenta o Inimigo
-void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN])
-{
-    float distancia[4];
-    float menorDistancia = 0;
-    int menorSentido = 0;
-    int i;
-
-    predador[predadorAtual].linha--;
-
-    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4)
+    void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN])
     {
-        distancia[0] = calculaDistancia(jogador, predador, predadorAtual, mapa[COL][LIN]);
-    }
-    else
-    {
-        distancia[0] = 99;
-    }
+        float distancia[4];
+        float menorDistancia = 0;
+        int menorSentido = 0;
+        int i;
 
-    predador[predadorAtual].linha += 2;
 
-    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4)
-    {
-        distancia[1] = calculaDistancia(jogador, predador, predadorAtual, mapa[COL][LIN]);
-    }
-    else
-    {
-        distancia[1] = 99;
-    }
+        predador[predadorAtual].linha--;
 
-    predador[predadorAtual].linha--;
-    predador[predadorAtual].coluna--;
-
-    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4)
-    {
-        distancia[2] = calculaDistancia(jogador, predador, predadorAtual, mapa[COL][LIN]);
-    }
-    else
-    {
-        distancia[2] = 99;
-    }
-
-    predador[predadorAtual].coluna += 2;
-
-    if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4)
-    {
-        distancia[3] = calculaDistancia(jogador, predador, predadorAtual, mapa[COL][LIN]);
-    }
-    else
-    {
-        distancia[3] = 99;
-    }
-
-    predador[predadorAtual].coluna--;
-
-    menorDistancia = distancia[0];
-
-    for(i = 0; i < 4; i++)
-    {
-        if(distancia[i] <= menorDistancia && distancia[i] != 99)
+        if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4)
         {
-            menorDistancia = distancia[i];
-            menorSentido = i;
+            distancia[0] = calculaDistancia(jogador, predador, predadorAtual, mapa);
         }
-    }
+        else
+        {
+            distancia[0] = 99;
+        }
+
+        predador[predadorAtual].linha += 2;
+
+        if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4)
+        {
+            distancia[1] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        }
+        else
+        {
+            distancia[1] = 99;
+        }
+
+        predador[predadorAtual].linha--;
+        predador[predadorAtual].coluna--;
+
+        if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4)
+        {
+            distancia[2] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        }
+        else
+        {
+            distancia[2] = 99;
+        }
+
+        predador[predadorAtual].coluna += 2;
+
+        if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3 && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4)
+        {
+            distancia[3] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        }
+        else
+        {
+            distancia[3] = 99;
+        }
+
+        predador[predadorAtual].coluna--;
+
+        menorDistancia = distancia[0];
+
+        for(i = 0; i < 4; i++)
+        {
+            if(distancia[i] <= menorDistancia && distancia[i] != 99)
+            {
+                menorDistancia = distancia[i];
+                menorSentido = i;
+            }
+        }
 
         switch(menorSentido)
         {
@@ -788,21 +805,21 @@ void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual,
             break;
         }
 
-}
+    }
 
 // Função que solta as Teclas pressionadas
-void desabilitaTeclas(bool keys[])
-{
-    int i;
-
-    for(i = 0; i < 7; i++)
+    void desabilitaTeclas(bool keys[])
     {
-        keys[i] = false;
-    }
-}
+        int i;
 
-float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM predador[], int predadorAtual, int mapa[COL][LIN])
-{
+        for(i = 0; i < 7; i++)
+        {
+            keys[i] = false;
+        }
+    }
+
+    float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM predador[], int predadorAtual, int mapa[COL][LIN])
+    {
         float distancia = sqrt(pow((jogador->coluna - predador[predadorAtual].coluna), 2) + pow((jogador->linha - predador[predadorAtual].linha), 2));
         return distancia;
-}
+    }
