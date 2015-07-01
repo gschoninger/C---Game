@@ -194,11 +194,16 @@ int main(void)
             switch(telas.telaAtual){
             case 0:
                 // Início
-                if(keys[UP])
-                    telas.proximaTela = JOGO_RODANDO;
-
-                if(keys[DOWN])
-                    telas.proximaTela = TELA_INSTRUCAO;
+                if(keys[DOWN] || keys[UP]){
+                    switch(telas.proximaTela){
+                    case TELA_INSTRUCAO:
+                        telas.proximaTela = JOGO_RODANDO;
+                        break;
+                    case JOGO_RODANDO:
+                        telas.proximaTela = TELA_INSTRUCAO;
+                        break;
+                    }
+                }
 
                 switch(telas.proximaTela){
                 case JOGO_RODANDO:
