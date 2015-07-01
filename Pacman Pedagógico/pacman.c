@@ -17,8 +17,6 @@ int main(void)
     int largura = LARGURA_TELA;
     int altura = ALTURA_TELA;
 
-    int estado = TELA_INICIAL;
-
     int predadorAtual = 0;
     int numeroPredador = 1;
 
@@ -29,6 +27,9 @@ int main(void)
     IMAGEM imagem;
     INFO info;
     TELAS telas;
+
+    telas.telaAtual = TELA_INICIAL;
+    telas.proximaTela = JOGO_RODANDO;
 
     // Posição inicial do personagem
     jogador.linha = JOGADOR_LINHA;
@@ -44,9 +45,9 @@ int main(void)
     // Matriz do mapa
                         // 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
     int mapa[COL][LIN] = {{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},  // 0
-                          {3, 2, 1, 1, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 1
+                          {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 1
                           {3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3},  // 2
-                          {3, 6, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},  // 3
+                          {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},  // 3
                           {3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3},  // 4
                           {3, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 3},  // 5
                           {3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3},  // 6
@@ -122,11 +123,13 @@ int main(void)
     info.spriteMoldura = al_load_bitmap("Sprites/Icones/MolduraPonto.bmp");
     info.iconeLivros = al_load_bitmap("Sprites/Blocos/Livros.bmp");
 
-    telas.inicial = al_load_bitmap("Sprites/Telas/Inicial.bmp");
+    telas.inicialA = al_load_bitmap("Sprites/Telas/InicialA.bmp");
+    telas.inicialB= al_load_bitmap("Sprites/Telas/InicialB.bmp");
     telas.instrucao = al_load_bitmap("Sprites/Telas/Instrucao.bmp");
     telas.pausa = al_load_bitmap("Sprites/Telas/Pausa.bmp");
     telas.creditos = al_load_bitmap("Sprites/Telas/Creditos.bmp");
-    telas.final = al_load_bitmap("Sprites/Telas/Final.bmp");
+    telas.ganhou = al_load_bitmap("Sprites/Telas/Ganhou.bmp");
+    telas.perdeu = al_load_bitmap("Sprites/Telas/Perdeu.bmp");
 
     info.fonte[0] = al_load_ttf_font("Fontes/pac.ttf", 20, 0);
     info.fonte[1] = al_load_ttf_font("Fontes/arc-classic.ttf", 28, 0);
@@ -188,20 +191,29 @@ int main(void)
 
         // Laço de repetição disparado pelo Timer
         if(ev.type == ALLEGRO_EVENT_TIMER){
-            switch(estado){
+            switch(telas.telaAtual){
             case 0:
                 // Início
+                if(keys[UP])
+                    telas.proximaTela = JOGO_RODANDO;
 
-                al_clear_to_color(al_map_rgb(127, 0, 255));
-                al_draw_textf(info.fonte[4], al_map_rgb(50,10,70), largura / 2,  altura / 2, ALLEGRO_ALIGN_CENTRE, "PRESS START!");
-                al_draw_textf(info.fonte[5], al_map_rgb(50,10,70), largura / 2, (altura/2) + 60, ALLEGRO_ALIGN_CENTRE, "TUTORIAL");
+                if(keys[DOWN])
+                    telas.proximaTela = TELA_INSTRUCAO;
 
+                switch(telas.proximaTela){
+                case JOGO_RODANDO:
+                    al_draw_bitmap(telas.inicialA, 0, 0, 0);
+                    break;
+                case TELA_INSTRUCAO:
+                    al_draw_bitmap(telas.inicialB, 0, 0, 0);
+                    break;
+                }
 
                 if(keys[ESC])
                     return 0;
 
                 if(keys[ENTER])
-                    estado = JOGO_RODANDO;
+                    telas.telaAtual = telas.proximaTela;
                 break;
             case 1:
                 // Instruções
@@ -211,7 +223,7 @@ int main(void)
                     return 0;
 
                 if(keys[ENTER])
-                    estado = JOGO_RODANDO;
+                    telas.telaAtual = JOGO_RODANDO;
 
                 break;
             case 2:
@@ -249,13 +261,16 @@ int main(void)
                 }
 
                 if(jogador.pontosTotal == 206)
-                    estado = TELA_FINAL;
+                    telas.telaAtual = TELA_GANHOU;
+
+                if(jogador.vidas == 0)
+                    telas.telaAtual = TELA_PERDEU;
 
                 if(keys[ESC])
-                    estado = TELA_CREDITOS;
+                    telas.telaAtual = TELA_CREDITOS;
 
                 if(keys[PAUSA])
-                    estado = TELA_PAUSA;
+                    telas.telaAtual = TELA_PAUSA;
 
                 break;
             case 3:
@@ -263,24 +278,35 @@ int main(void)
                 al_draw_bitmap(telas.pausa, 0, 0, 0);
 
                 if(keys[ESC])
-                    estado = TELA_FINAL;
+                    telas.telaAtual = TELA_CREDITOS;
 
                 if(keys[PAUSA])
-                    estado = JOGO_RODANDO;
+                    telas.telaAtual = JOGO_RODANDO;
 
                 break;
             case 4:
-                // Final
-                al_draw_bitmap(telas.final, 0, 0, 0);
+                // Ganhou
+                al_draw_bitmap(telas.ganhou, 0, 0, 0);
 
                 if(keys[ENTER])
-                    estado = TELA_CREDITOS;
+                    telas.telaAtual = TELA_CREDITOS;
 
                 if(keys[ESC])
                     return 0;
 
                 break;
             case 5:
+                // Perdeu
+                al_draw_bitmap(telas.perdeu, 0, 0, 0);
+
+                if(keys[ENTER])
+                    telas.telaAtual = TELA_CREDITOS;
+
+                if(keys[ESC])
+                    return 0;
+
+                break;
+            case 6:
                 // Créditos
                 al_draw_bitmap(telas.creditos, 0, 0, 0);
 

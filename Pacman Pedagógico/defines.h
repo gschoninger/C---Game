@@ -12,7 +12,7 @@
 // Header das Estruturas
 #include "struct.h"
 
-#define FULLSCREEN false
+#define FULLSCREEN true
 
 #define COL 20
 #define LIN 22
@@ -31,8 +31,9 @@
 #define TELA_INSTRUCAO  1
 #define JOGO_RODANDO    2
 #define TELA_PAUSA      3
-#define TELA_FINAL      4
-#define TELA_CREDITOS   5
+#define TELA_GANHOU     4
+#define TELA_PERDEU     5
+#define TELA_CREDITOS   6
 
 #define QUADROS 60
 
@@ -50,7 +51,7 @@
 #define JOGADOR_COLUNA      10
 #define JOGADOR_PARCIAL     0
 #define JOGADOR_TOTAL       0
-#define JOGADOR_VIDAS       5
+#define JOGADOR_VIDAS       3
 #define JOGADOR_LIVROS      1
 
 void desenhaJogador(PERSONAGEM *jogador, INFO *info);

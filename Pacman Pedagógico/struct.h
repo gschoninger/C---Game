@@ -38,9 +38,14 @@ typedef struct imagem
 
 typedef struct telas
 {
-    ALLEGRO_BITMAP *inicial;
+    ALLEGRO_BITMAP *inicialA;
+    ALLEGRO_BITMAP *inicialB;
     ALLEGRO_BITMAP *instrucao;
     ALLEGRO_BITMAP *pausa;
     ALLEGRO_BITMAP *creditos;
-    ALLEGRO_BITMAP *final;
+    ALLEGRO_BITMAP *ganhou;
+    ALLEGRO_BITMAP *perdeu;
+
+    int telaAtual;
+    int proximaTela;
 } TELAS;
