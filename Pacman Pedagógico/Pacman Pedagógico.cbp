@@ -31,9 +31,14 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="defines.h" />
+		<Unit filename="engine.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="pacman.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="struct.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

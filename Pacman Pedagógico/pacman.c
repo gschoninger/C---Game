@@ -1,85 +1,17 @@
 /*
-|------------------------------------------------------------------------------------------------|
-|    Jogo educacional desenvolvido para a disciplina de Programação em Linguagemm C por          |
-|------------------------------------------------------------------------------------------------|
-|    Gabriel Bolgenhagen Schöninger e Vitor Volpato Goulart                                      |
-|------------------------------------------------------------------------------------------------|
-|    Utilizando a biblioteca Allegro 5.0.10                                                      |
-|------------------------------------------------------------------------------------------------|
+|------------------------------------------------------------------------------------------|
+|    Jogo educacional desenvolvido para a disciplina de Programação em Linguagemm C por    |
+|------------------------------------------------------------------------------------------|
+|               Gabriel Bolgenhagen Schöninger e Vitor Volpato Goulart                     |
+|------------------------------------------------------------------------------------------|
+|                      Utilizando a biblioteca Allegro 5.0.10                              |
+|------------------------------------------------------------------------------------------|
 */
 
-// Bibliotecas Allegro
-//****************************************************************************************************************************************************************************************************************
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_image.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_ttf.h>
-//****************************************************************************************************************************************************************************************************************
-// Outras bibliotecas
-//****************************************************************************************************************************************************************************************************************
-#include <stdio.h>
-#include <math.h>
-//****************************************************************************************************************************************************************************************************************
-// Define o tamanho do mapa
-//****************************************************************************************************************************************************************************************************************
-#define COL 20
-#define LIN 22
+// Definições, bibliotecas e protótipos de funções
+#include "defines.h"
 
-#define TAMANHO_BLOCO 35
-
-#define VELOCIDADE_PREDADOR 60/4
-
-#define X_MAPA 144
-#define Y_MAPA 51
-
-#define TELA_X 1024
-#define TELA_Y 768
-
-#define TELA_INICIAL 0
-#define TELA_INSTRUCAO 1
-#define JOGO_RODANDO 2
-#define TELA_PAUSA 3
-#define TELA_FINAL 4
-#define TELA_CREDITOS 5
-//****************************************************************************************************************************************************************************************************************
-enum KEYS {UP, DOWN, LEFT, RIGHT, ENTER, ESC, PAUSA}; // DECLARAÇÃO DAS TECLAS DE INTERFACE
-
-// DECLARAÇÃO DA ESTRUTURA JOGADOR
-//****************************************************************************************************************************************************************************************************************
-typedef struct personagem
-{
-    int linha;
-    int coluna;
-    int linhaAnt;
-    int colunaAnt;
-
-    int vidas;
-    int pontosParcial;
-    int pontosTotal;
-
-    ALLEGRO_BITMAP *sprite;
-} PERSONAGEM;
-//****************************************************************************************************************************************************************************************************************
-// DECLARAÇÃO DA ESTRUTURA DE INFORMAÇÃO DO JOGADOR
-//****************************************************************************************************************************************************************************************************************
-typedef struct info
-{
-    ALLEGRO_BITMAP *spriteVida;
-    ALLEGRO_BITMAP *spritePontos;
-    ALLEGRO_BITMAP *spriteMoldura;
-
-    ALLEGRO_FONT *fonte[10];
-} INFO;
-//****************************************************************************************************************************************************************************************************************
-// DECLARAÇÃO DAS ESTRUTURAS DE TELAS
-//****************************************************************************************************************************************************************************************************************
-typedef struct imagem
-{
-    ALLEGRO_BITMAP *bloco[3];
-    ALLEGRO_BITMAP *parede[7];
-} IMAGEM;
-
+<<<<<<< HEAD
 typedef struct telas
 {
     ALLEGRO_BITMAP *inicial;
@@ -99,42 +31,47 @@ void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual,
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
 float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM predador[], int predadorAtual, int mapa[COL][LIN]);
 //****************************************************************************************************************************************************************************************************************
+=======
+>>>>>>> 913342517e3a2f2330962f8b64b5be47c954d7c1
 int main(void)
 {
     // Tamanho da tela
-    int largura = TELA_X;
-    int altura = TELA_Y;
+    int largura = LARGURA_TELA;
+    int altura = ALTURA_TELA;
 
-    int estado = 0;
+    int estado = TELA_INICIAL;
 
     int predadorAtual = 0;
+<<<<<<< HEAD
     int numeroPredador = 4;
+=======
+    int numeroPredador = 1;
+>>>>>>> 913342517e3a2f2330962f8b64b5be47c954d7c1
 
 // Criação da Estrutura Boneco
     PERSONAGEM jogador;
     PERSONAGEM predador[numeroPredador];
+<<<<<<< HEAD
 
+=======
+>>>>>>> 913342517e3a2f2330962f8b64b5be47c954d7c1
 
     IMAGEM imagem;
     INFO info;
     TELAS telas;
 
     // Posição inicial do personagem
-    jogador.linha = 11;
-    jogador.coluna = 10;
-    jogador.pontosParcial = 0;
-    jogador.pontosTotal = 0;
-    jogador.vidas = 3;
+    jogador.linha = JOGADOR_LINHA;
+    jogador.coluna = JOGADOR_COLUNA;
+    jogador.pontosParcial = JOGADOR_PARCIAL;
+    jogador.pontosTotal = JOGADOR_TOTAL;
+    jogador.vidas = JOGADOR_VIDAS;
+    jogador.livros = JOGADOR_LIVROS;
 
     predador[0].linha = 1;
     predador[0].coluna = 1;
-    predador[1].linha = 1;
-    predador[1].coluna = 19;
-    predador[2].linha = 17;
-    predador[2].coluna = 1;
-    predador[3].linha = 17;
-    predador[3].coluna = 19;
 
+<<<<<<< HEAD
             // Matriz do mapa
       // 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
 int mapa[COL][LIN] =
@@ -158,16 +95,40 @@ int mapa[COL][LIN] =
         {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 17
         {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}   // 18
     };
+=======
+    // Matriz do mapa
+                        // 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
+    int mapa[COL][LIN] = {{3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3},  // 0
+                          {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 1
+                          {3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3},  // 2
+                          {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},  // 3
+                          {3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3},  // 4
+                          {3, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 3},  // 5
+                          {3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3},  // 6
+                          {3, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3},  // 7
+                          {3, 3, 3, 3, 3, 1, 3, 0, 4, 4, 4, 4, 4, 0, 3, 1, 3, 3, 3, 3, 3},  // 8
+                          {5, 0, 0, 0, 0, 1, 3, 0, 4, 0, 0, 0, 4, 0, 3, 1, 0, 0, 0, 0, 5},  // 9
+                          {3, 3, 3, 3, 3, 1, 3, 0, 4, 4, 4, 4, 4, 0, 3, 1, 3, 3, 3, 3, 3},  // 10
+                          {3, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 3},  // 11
+                          {3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3},  // 12
+                          {3, 1, 3, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 3, 1, 3},  // 13
+                          {3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3},  // 14
+                          {3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3},  // 15
+                          {3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3, 1, 3, 3, 3, 1, 3, 3, 3, 1, 3},  // 16
+                          {3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 3},  // 17
+                          {3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3}   // 18
+                         };
+>>>>>>> 913342517e3a2f2330962f8b64b5be47c954d7c1
 
     bool done = false;
     bool redraw = true;
 
     // Contagem de quadros por segundo
-    int FPS = 60;
+    int FPS = QUADROS;
     int contaTimer = 0;
 
     // Vetor das Teclas pressionadas
-    bool keys[7] = {false, false, false, false,false, false, false};
+    bool keys[9] = {false, false, false, false, false, false, false, false, false};
 
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
@@ -179,7 +140,9 @@ int mapa[COL][LIN] =
         return -1;
 
     // Cria e testa o Display
-    al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+    if(FULLSCREEN)
+        al_set_new_display_flags(ALLEGRO_FULLSCREEN);
+
     display = al_create_display(largura, altura);
     if(!display)
         return -1;
@@ -194,6 +157,8 @@ int mapa[COL][LIN] =
     imagem.bloco[1] = al_load_bitmap("Sprites/Blocos/BlocoB.bmp");
     imagem.bloco[2] = al_load_bitmap("Sprites/Blocos/Seta.bmp");
 
+    imagem.livros = al_load_bitmap("Sprites/Blocos/Livros.bmp");
+
     imagem.parede[0] = al_load_bitmap("Sprites/Paredes/ParedeA.bmp");
     imagem.parede[1] = al_load_bitmap("Sprites/Paredes/ParedeB.bmp");
     imagem.parede[2] = al_load_bitmap("Sprites/Paredes/ParedeC.bmp");
@@ -204,14 +169,14 @@ int mapa[COL][LIN] =
 
     jogador.sprite = al_load_bitmap("Sprites/Jogador/Jogador.bmp");
 
-    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++)
-    {
+    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
         predador[predadorAtual].sprite = al_load_bitmap("Sprites/Predador/Predador.bmp");
     }
 
     info.spriteVida = al_load_bitmap("Sprites/Icones/Vida.bmp");
     info.spritePontos = al_load_bitmap("Sprites/Icones/Ponto.bmp");
     info.spriteMoldura = al_load_bitmap("Sprites/Icones/MolduraPonto.bmp");
+    info.iconeLivros = al_load_bitmap("Sprites/Blocos/Livros.bmp");
 
     telas.inicial = al_load_bitmap("Sprites/Telas/Inicial.bmp");
     telas.instrucao = al_load_bitmap("Sprites/Telas/Instrucao.bmp");
@@ -239,16 +204,13 @@ int mapa[COL][LIN] =
     al_start_timer(timer);
 
     // Laço de repetição, enquanto ESC não for pressionado
-    while(!done)
-    {
+    while(!done){
         ALLEGRO_EVENT ev;
         al_wait_for_event(event_queue, &ev);
 
         // Testa o pressionamento de teclas
-        if(ev.type == ALLEGRO_EVENT_KEY_DOWN)
-        {
-            switch(ev.keyboard.keycode)
-            {
+        if(ev.type == ALLEGRO_EVENT_KEY_DOWN){
+            switch(ev.keyboard.keycode){
             case ALLEGRO_KEY_UP:
                 keys[UP] = true;
                 break;
@@ -270,19 +232,22 @@ int mapa[COL][LIN] =
             case ALLEGRO_KEY_P:
                 keys[PAUSA] = true;
                 break;
+            case ALLEGRO_KEY_Q:
+                keys[COMPRA] = true;
+                break;
+            case ALLEGRO_KEY_W:
+                keys[LARGA] = true;
+                break;
             }
         }
 
-        if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-        {
+        if(ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
             done = true;
         }
 
         // Laço de repetição disparado pelo Timer
-        if(ev.type == ALLEGRO_EVENT_TIMER)
-        {
-            switch(estado)
-            {
+        if(ev.type == ALLEGRO_EVENT_TIMER){
+            switch(estado){
             case 0:
                 // Início
                 al_clear_to_color(al_map_rgb(127, 0, 255));
@@ -308,9 +273,14 @@ int mapa[COL][LIN] =
                 break;
             case 2:
                 // Jogo rodando
+<<<<<<< HEAD
                 if(keys[UP])
                 {
                     moveJogador(&jogador, predador, mapa, 'U', predadorAtual);
+=======
+                if(keys[UP]){
+                    moveJogador(&jogador, mapa, 'U');
+>>>>>>> 913342517e3a2f2330962f8b64b5be47c954d7c1
                 }
 
                 if(keys[DOWN])
@@ -322,30 +292,33 @@ int mapa[COL][LIN] =
                 if(keys[RIGHT])
                     moveJogador(&jogador, predador, mapa, 'R', predadorAtual);
 
-                if(keys[ESC])
-                    estado = TELA_FINAL;
+                if(keys[COMPRA])
+                    compraLivros(&jogador);
 
-                if(keys[PAUSA])
-                    estado = TELA_PAUSA;
+                if(keys[LARGA])
+                    largaLivros(&jogador, mapa);
 
                 desenhaMapa(mapa, &imagem);
                 desenhaJogador(&jogador, &info);
-
-                for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++)
-                {
-                    desenhaPredador(predador, predadorAtual);
-                }
+                desenhaPredador(predador, numeroPredador);
 
                 contaTimer++;
 
-                if(contaTimer == VELOCIDADE_PREDADOR)
-                {
+                if(contaTimer == VELOCIDADE_PREDADOR){
                     contaTimer = 0;
-                    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++)
-                    {
+                    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
                         movePredador(predador, &jogador, predadorAtual, mapa);
                     }
                 }
+
+                if(jogador.pontosTotal == 206)
+                    estado = TELA_FINAL;
+
+                if(keys[ESC])
+                    estado = TELA_CREDITOS;
+
+                if(keys[PAUSA])
+                    estado = TELA_PAUSA;
 
                 break;
             case 3:
@@ -385,8 +358,7 @@ int mapa[COL][LIN] =
         }
 
         // Redesenha a tela
-        if(redraw && al_is_event_queue_empty(event_queue))
-        {
+        if(redraw && al_is_event_queue_empty(event_queue)){
             redraw = false;
             al_flip_display();
             al_clear_to_color(al_map_rgb(255, 255, 255));
@@ -397,9 +369,11 @@ int mapa[COL][LIN] =
     al_destroy_event_queue(event_queue);
     al_destroy_timer(timer);
     al_destroy_display(display);
+    // Destruir Bitmaps
 
     return 0;
 }
+<<<<<<< HEAD
 
 void desenhaJogador(PERSONAGEM *jogador, INFO *info)
 {
@@ -823,3 +797,5 @@ void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN],
         float distancia = sqrt(pow((jogador->coluna - predador[predadorAtual].coluna), 2) + pow((jogador->linha - predador[predadorAtual].linha), 2));
         return distancia;
     }
+=======
+>>>>>>> 913342517e3a2f2330962f8b64b5be47c954d7c1
