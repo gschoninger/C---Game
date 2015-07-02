@@ -35,15 +35,66 @@ void desenhaJogador(PERSONAGEM *jogador, INFO *info)
 }
 
 // Função que desenha o Valentão
-void desenhaPredador(PERSONAGEM predador[], int numeroPredador)
+void desenhaPredador(PERSONAGEM predador[], PERSONAGEM *jogador, int numeroPredador)
 {
     int predadorAtual;
 
     for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
+        if(predador[0].linha == predador[1].linha && predador[0].coluna == predador[1].coluna)
+        {
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[0].coluna + X_MAPA, TAMANHO_BLOCO * predador[0].linha + Y_MAPA, 0);
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[1].coluna + X_MAPA, TAMANHO_BLOCO * predador[1].linha + Y_MAPA, 0);
+        }
+        else
+        {
         al_draw_bitmap(predador[predadorAtual].sprite, TAMANHO_BLOCO * predador[predadorAtual].coluna + X_MAPA, TAMANHO_BLOCO * predador[predadorAtual].linha + Y_MAPA, 0);
-    }
+        }
+        if(predador[0].linha == predador[2].linha && predador[0].coluna == predador[2].coluna)
+        {
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[0].coluna + X_MAPA, TAMANHO_BLOCO * predador[0].linha + Y_MAPA, 0);
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[2].coluna + X_MAPA, TAMANHO_BLOCO * predador[2].linha + Y_MAPA, 0);
+        }
+        else
+        {
+        al_draw_bitmap(predador[predadorAtual].sprite, TAMANHO_BLOCO * predador[predadorAtual].coluna + X_MAPA, TAMANHO_BLOCO * predador[predadorAtual].linha + Y_MAPA, 0);
+        }
+        if(predador[0].linha == predador[3].linha && predador[0].coluna == predador[3].coluna)
+        {
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[0].coluna + X_MAPA, TAMANHO_BLOCO * predador[0].linha + Y_MAPA, 0);
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[3].coluna + X_MAPA, TAMANHO_BLOCO * predador[3].linha + Y_MAPA, 0);
+        }
+        else
+        {
+        al_draw_bitmap(predador[predadorAtual].sprite, TAMANHO_BLOCO * predador[predadorAtual].coluna + X_MAPA, TAMANHO_BLOCO * predador[predadorAtual].linha + Y_MAPA, 0);
+        }
+        if(predador[1].linha == predador[2].linha && predador[1].coluna == predador[2].coluna)
+        {
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[1].coluna + X_MAPA, TAMANHO_BLOCO * predador[1].linha + Y_MAPA, 0);
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[2].coluna + X_MAPA, TAMANHO_BLOCO * predador[2].linha + Y_MAPA, 0);
+        }
+        else
+        {
+        al_draw_bitmap(predador[predadorAtual].sprite, TAMANHO_BLOCO * predador[predadorAtual].coluna + X_MAPA, TAMANHO_BLOCO * predador[predadorAtual].linha + Y_MAPA, 0);
+        }
+        if(predador[1].linha == predador[3].linha && predador[1].coluna == predador[3].coluna)
+        {
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[1].coluna + X_MAPA, TAMANHO_BLOCO * predador[1].linha + Y_MAPA, 0);
+        }
+        else
+        {
+        al_draw_bitmap(predador[predadorAtual].sprite, TAMANHO_BLOCO * predador[predadorAtual].coluna + X_MAPA, TAMANHO_BLOCO * predador[predadorAtual].linha + Y_MAPA, 0);
+        }
+        if(predador[2].linha == predador[3].linha && predador[2].coluna == predador[3].coluna)
+        {
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[2].coluna + X_MAPA, TAMANHO_BLOCO * predador[2].linha + Y_MAPA, 0);
+        al_draw_bitmap((al_load_bitmap("Sprites/Jogador/Jogador.bmp")), TAMANHO_BLOCO * predador[3].coluna + X_MAPA, TAMANHO_BLOCO * predador[3].linha + Y_MAPA, 0);
+        }
+        else
+        {
+        al_draw_bitmap(predador[predadorAtual].sprite, TAMANHO_BLOCO * predador[predadorAtual].coluna + X_MAPA, TAMANHO_BLOCO * predador[predadorAtual].linha + Y_MAPA, 0);
+        }
 }
-
+}
 // Função que desenha o Mapa
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 {
@@ -178,7 +229,6 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
         posAtualY += TAMANHO_BLOCO;
     }
 }
-
 // Função que movimenta o Jogador
 void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN], char sentido, int predadorAtual)
 {
@@ -270,76 +320,90 @@ void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN],
 }
 
 // Função que movimenta o Valentão
-void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN])
-{
-    float distancia[4];
-    float menorDistancia = 0;
-    bool trocaSentido = false;
-    int i, j;
-
-    for(i = 0; i < 4; i++){
-        predador[predadorAtual].movimentoAnt[i] = predador[predadorAtual].movimentoAtual[i];
-    }
-
-    int predadorMenosLinha = mapa[predador[predadorAtual].linha - 1][predador[predadorAtual].coluna];
-    int predadorMaisLinha = mapa[predador[predadorAtual].linha + 1][predador[predadorAtual].coluna];
-    int predadorMenosColuna = mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna - 1];
-    int predadorMaisColuna = mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna + 1];
-
-    if(predadorMenosLinha != 3 && predadorMenosLinha != 4 && predadorMenosLinha != 6){
-        distancia[UP] = calculaDistancia(jogador, predador, predadorAtual, mapa);
-        predador[predadorAtual].movimentoAtual[UP] = true;
-    }else{
-        distancia[UP] = 99;
-        predador[predadorAtual].movimentoAtual[UP] = false;
-    }
+ void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN])
+    {
+        float distancia[4];
+        float menorDistancia = 0;
+        int menorSentido = 0;
+        int i;
 
 
-    if(predadorMaisLinha != 3 && predadorMaisLinha != 4 && predadorMaisLinha != 6){
-        distancia[DOWN] = calculaDistancia(jogador, predador, predadorAtual, mapa);
-        predador[predadorAtual].movimentoAtual[DOWN] = true;
-    }else{
-        distancia[DOWN] = 99;
-        predador[predadorAtual].movimentoAtual[DOWN] = false;
-    }
+        predador[predadorAtual].linha--;
 
-    if(predadorMenosColuna != 3 && predadorMenosColuna != 4 && predadorMenosColuna != 6){
-        distancia[LEFT] = calculaDistancia(jogador, predador, predadorAtual, mapa);
-        predador[predadorAtual].movimentoAtual[LEFT] = true;
-    }else{
-        distancia[LEFT] = 99;
-        predador[predadorAtual].movimentoAtual[LEFT] = false;
-    }
-
-
-    if(predadorMaisColuna != 3 && predadorMaisColuna != 4 && predadorMaisColuna != 6){
-        distancia[RIGHT] = calculaDistancia(jogador, predador, predadorAtual, mapa);
-        predador[predadorAtual].movimentoAtual[RIGHT] = true;
-    }else{
-        distancia[RIGHT] = 99;
-        predador[predadorAtual].movimentoAtual[RIGHT] = false;
-    }
-
-    menorDistancia = distancia[0];
-
-    for(i = 0; i < 4; i++){
-        if(predador[predadorAtual].movimentoAtual[i] != predador[predadorAtual].movimentoAnt[i]){
-            trocaSentido = true;
-        }else{
-            trocaSentido = false;
+        if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3
+           && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4
+           && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 6
+           && predador[predadorAtual].linha != predador[predadorAtual + 1].linha
+           && predador[predadorAtual].coluna != predador[predadorAtual + 1].coluna)
+        {
+            distancia[0] = calculaDistancia(jogador, predador, predadorAtual, mapa);
         }
-    }
+        else
+        {
+            distancia[0] = 99;
+        }
 
-    if(trocaSentido){
-        for(j = 0; j < 4; j++){
-            if(distancia[j] <= menorDistancia && distancia[j] != 99){
-                menorDistancia = distancia[j];
-                predador[predadorAtual].sentido = j;
+        predador[predadorAtual].linha += 2;
+
+        if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3
+           && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4
+           && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 6
+           && predador[predadorAtual].linha != predador[predadorAtual + 1].linha
+           && predador[predadorAtual].coluna != predador[predadorAtual + 1].coluna)
+        {
+            distancia[1] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        }
+        else
+        {
+            distancia[1] = 99;
+        }
+
+        predador[predadorAtual].linha--;
+        predador[predadorAtual].coluna--;
+
+        if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3
+           && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4
+           && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 6
+           && predador[predadorAtual].linha != predador[predadorAtual + 1].linha
+           && predador[predadorAtual].coluna != predador[predadorAtual + 1].coluna)
+        {
+            distancia[2] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        }
+        else
+        {
+            distancia[2] = 99;
+        }
+
+        predador[predadorAtual].coluna += 2;
+
+        if(mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 3
+           && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 4
+           && mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna] != 6
+           && predador[predadorAtual].linha != predador[predadorAtual + 1].linha
+           && predador[predadorAtual].coluna != predador[predadorAtual + 1].coluna)
+        {
+            distancia[3] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        }
+        else
+        {
+            distancia[3] = 99;
+        }
+
+        predador[predadorAtual].coluna--;
+
+        menorDistancia = distancia[0];
+
+        for(i = 0; i < 4; i++)
+        {
+            if(distancia[i] <= menorDistancia && distancia[i] != 99)
+            {
+                menorDistancia = distancia[i];
+                menorSentido = i;
             }
         }
-    }
 
-    switch(predador[predadorAtual].sentido){
+        switch(menorSentido)
+        {
         case 0:
             predador[predadorAtual].linha--;
             break;
@@ -352,18 +416,18 @@ void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual,
         case 3:
             predador[predadorAtual].coluna++;
             break;
-    }
+        }
         for(predadorAtual = 0; predadorAtual < 4; predadorAtual++)
         {
 
             if(jogador->coluna == predador[predadorAtual].coluna && jogador->linha == predador[predadorAtual].linha)
             {
                 jogador->vidas--;
-                jogador->linha = JOGADOR_LINHA;
-                jogador->coluna = JOGADOR_COLUNA;
-            }
-        }
-}
+               jogador->linha = JOGADOR_LINHA;
+                jogador->coluna = JOGADOR_COLUNA;            }
+       }
+    }
+
 
 // Função que solta as Teclas pressionadas
 void desabilitaTeclas(bool keys[])
@@ -393,7 +457,7 @@ void compraLivros(PERSONAGEM *jogador)
 
 void largaLivros(PERSONAGEM *jogador, int mapa[COL][LIN])
 {
-    if(jogador->livros > 0){
+    if(jogador->livros > 0 && mapa[jogador->linha][jogador->coluna] != 6){
         mapa[jogador->linha][jogador->coluna] = 6;
         jogador->livros--;
     }

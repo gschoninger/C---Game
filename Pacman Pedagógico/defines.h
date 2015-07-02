@@ -19,7 +19,7 @@
 
 #define TAMANHO_BLOCO 35
 
-#define VELOCIDADE_PREDADOR 60
+#define VELOCIDADE_PREDADOR 30
 
 #define X_MAPA 51
 #define Y_MAPA 51
@@ -35,7 +35,7 @@
 #define TELA_PERDEU     5
 #define TELA_CREDITOS   6
 
-#define QUADROS 60
+#define QUADROS 120
 
 #define UP      0
 #define DOWN    1
@@ -51,15 +51,15 @@
 #define JOGADOR_COLUNA      10
 #define JOGADOR_PARCIAL     0
 #define JOGADOR_TOTAL       0
-#define JOGADOR_VIDAS       3
+#define JOGADOR_VIDAS       5
 #define JOGADOR_LIVROS      1
 
 void desenhaJogador(PERSONAGEM *jogador, INFO *info);
-void desenhaPredador(PERSONAGEM predador[], int numeroPredador);
+void desenhainimigo(PERSONAGEM inimigo[], PERSONAGEM jogador, int numeroinimigo);
 void desabilitaTeclas(bool keys[]);
-void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN], char sentido, int predadorAtual);
-void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN]);
+void moveJogador(PERSONAGEM *jogador, PERSONAGEM inimigo[], int mapa[COL][LIN], char sentido, int inimigoAtual);
+void moveinimigo(PERSONAGEM inimigo[], PERSONAGEM *jogador, int inimigoAtual, int mapa[COL][LIN]);
 void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
-float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM predador[], int predadorAtual, int mapa[COL][LIN]);
+float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM inimigo[], int inimigoAtual, int mapa[COL][LIN]);
 void compraLivros(PERSONAGEM *jogador);
 void largaLivros(PERSONAGEM *jogador, int mapa[COL][LIN]);
