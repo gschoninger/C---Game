@@ -6,23 +6,23 @@ void desenhaJogador(PERSONAGEM *jogador, INFO *info)
 {
     int i;
 
-    al_draw_textf(info->fonte[3], al_map_rgb(50,10,70), 830, 51, 0, "Pontos:  %d", jogador->pontosTotal);
+    al_draw_textf(info->fonte[3], al_map_rgb(50,10,70), 830, 200, 0, "%d", jogador->pontosTotal);
 
     // Desenha o Jogador
     al_draw_bitmap(jogador->sprite, TAMANHO_BLOCO * jogador->coluna + X_MAPA, TAMANHO_BLOCO * jogador->linha + Y_MAPA, 0);
 
     // Mostra a quantidade de vidas de forma gráfica
     for(i = 0; i < jogador->vidas; i++){
-        al_draw_bitmap(info->spriteVida, 830 + (i * TAMANHO_BLOCO), 150, 0);
+        al_draw_bitmap(info->spriteVida, 830 + (i * TAMANHO_BLOCO), 430, 0);
     }
 
-    // Mostra a quantidade de vidas de forma gráfica
+    // Mostra a quantidade de livros de forma gráfica
     for(i = 0; i < jogador->livros; i++){
-        al_draw_bitmap(info->iconeLivros, 830 + (i * TAMANHO_BLOCO), 250, 0);
+        al_draw_bitmap(info->iconeLivros, 830 + (i * TAMANHO_BLOCO), 630, 0);
     }
 
     // Desenha a moldura para a barra de pontos
-    al_draw_bitmap(info->spriteMoldura, 830, 350, 0);
+    al_draw_bitmap(info->spriteMoldura, 830, 250, 0);
 
     // Mostra a quantidade de pontos de forma gráfica
     for(i = 0; i < jogador->pontosParcial; i++){
@@ -30,7 +30,7 @@ void desenhaJogador(PERSONAGEM *jogador, INFO *info)
             jogador->pontosParcial -= 30;
         }
 
-        al_draw_bitmap(info->spritePontos, 835 + (i * 5), 355, 0);
+        al_draw_bitmap(info->spritePontos, 835 + (i * 5), 255, 0);
     }
 }
 

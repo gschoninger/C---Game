@@ -41,6 +41,7 @@ typedef struct telas
     ALLEGRO_BITMAP *inicialA;
     ALLEGRO_BITMAP *inicialB;
     ALLEGRO_BITMAP *instrucao;
+    ALLEGRO_BITMAP *jogo;
     ALLEGRO_BITMAP *pausa;
     ALLEGRO_BITMAP *creditos;
     ALLEGRO_BITMAP *ganhou;

@@ -126,6 +126,7 @@ int main(void)
     telas.inicialA = al_load_bitmap("Sprites/Telas/InicialA.bmp");
     telas.inicialB= al_load_bitmap("Sprites/Telas/InicialB.bmp");
     telas.instrucao = al_load_bitmap("Sprites/Telas/Instrucao.bmp");
+    telas.jogo = al_load_bitmap("Sprites/Telas/Jogo.bmp");
     telas.pausa = al_load_bitmap("Sprites/Telas/Pausa.bmp");
     telas.creditos = al_load_bitmap("Sprites/Telas/Creditos.bmp");
     telas.ganhou = al_load_bitmap("Sprites/Telas/Ganhou.bmp");
@@ -176,10 +177,10 @@ int main(void)
             case ALLEGRO_KEY_P:
                 keys[PAUSA] = true;
                 break;
-            case ALLEGRO_KEY_Q:
+            case ALLEGRO_KEY_C:
                 keys[COMPRA] = true;
                 break;
-            case ALLEGRO_KEY_W:
+            case ALLEGRO_KEY_D:
                 keys[LARGA] = true;
                 break;
             }
@@ -252,6 +253,7 @@ int main(void)
                 if(keys[LARGA])
                     largaLivros(&jogador, mapa);
 
+                al_draw_bitmap(telas.jogo, 0, 0, 0);
                 desenhaMapa(mapa, &imagem);
                 desenhaJogador(&jogador, &info);
                 desenhaPredador(predador, numeroPredador);
