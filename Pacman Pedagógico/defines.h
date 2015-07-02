@@ -19,8 +19,7 @@
 
 #define TAMANHO_BLOCO 35
 
-#define TEMPO_VALENTAO   60
-#define TEMPO_LIVRO      600
+#define VELOCIDADE_PREDADOR 60
 
 #define X_MAPA 51
 #define Y_MAPA 51
@@ -36,11 +35,6 @@
 #define TELA_PERDEU     5
 #define TELA_CREDITOS   6
 
-#define GANHOU_0 "Sprites/Telas/Ganhou_0.bmp"
-#define GANHOU_1 "Sprites/Telas/Ganhou_1.bmp"
-#define GANHOU_2 "Sprites/Telas/Ganhou_2.bmp"
-#define GANHOU_3 "Sprites/Telas/Ganhou_3.bmp"
-
 #define QUADROS 60
 
 #define UP      0
@@ -55,34 +49,17 @@
 
 #define JOGADOR_LINHA       11
 #define JOGADOR_COLUNA      10
-#define JOGADOR_PONTOS      0
+#define JOGADOR_PARCIAL     0
+#define JOGADOR_TOTAL       0
 #define JOGADOR_VIDAS       3
 #define JOGADOR_LIVROS      1
-#define PONTOS_LIVRO        50
 
-#define NUMERO_VALENTAO 1
-
-#define FONTE_20    0
-#define FONTE_48    1
-#define FONTE_100   2
-#define FONTE_300   3
-
-
-void desenhaJogador(JOGADOR *jogador);
-void moveJogador(JOGADOR *jogador, VALENTAO valentao[], int mapa[COL][LIN], char sentido, int valentaoAtual);
-
-void desenhaValentao(VALENTAO valentao[], int numeroValentao);
-void moveValentao(VALENTAO valentao[], JOGADOR *jogador, int valentaoAtual, int mapa[COL][LIN]);
-
-void desenhaInfo(JOGADOR *jogador, INFO *info, LIVROS *livros);
-
-void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
-
-void desenhaPontuacao(JOGADOR *jogador, INFO *info);
-
-void compraLivros(JOGADOR *jogador, LIVROS *livros);
-void largaLivros(JOGADOR *jogador, int mapa[COL][LIN], LIVROS *livros);
-
-float calculaDistancia(JOGADOR *jogador, VALENTAO valentao[], int valentaoAtual, int mapa[COL][LIN]);
-
+void desenhaJogador(PERSONAGEM *jogador, INFO *info);
+void desenhaPredador(PERSONAGEM predador[], int numeroPredador);
 void desabilitaTeclas(bool keys[]);
+void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN], char sentido, int predadorAtual);
+void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN]);
+void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem);
+float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM predador[], int predadorAtual, int mapa[COL][LIN]);
+void compraLivros(PERSONAGEM *jogador);
+void largaLivros(PERSONAGEM *jogador, int mapa[COL][LIN]);

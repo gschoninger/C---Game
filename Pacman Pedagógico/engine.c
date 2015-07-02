@@ -2,47 +2,45 @@
 #include "defines.h"
 
 // Função que desenha o Jogador
-void desenhaJogador(JOGADOR *jogador)
-{
-    // Desenha o Jogador
-    al_draw_bitmap(jogador->sprite, TAMANHO_BLOCO * jogador->coluna + X_MAPA, TAMANHO_BLOCO * jogador->linha + Y_MAPA, 0);
-}
-
-void desenhaInfo(JOGADOR *jogador, INFO *info, LIVROS *livros)
+void desenhaJogador(PERSONAGEM *jogador, INFO *info)
 {
     int i;
 
-    al_draw_textf(info->fonte[FONTE_48], al_map_rgb(0,0,0), 880, 130, 0, "%d", jogador->pontos);
+    al_draw_textf(info->fonte[3], al_map_rgb(50,10,70), 830, 200, 0, "%d", jogador->pontosTotal);
+
+    // Desenha o Jogador
+    al_draw_bitmap(jogador->sprite, TAMANHO_BLOCO * jogador->coluna + X_MAPA, TAMANHO_BLOCO * jogador->linha + Y_MAPA, 0);
 
     // Mostra a quantidade de vidas de forma gráfica
     for(i = 0; i < jogador->vidas; i++){
-        al_draw_bitmap(info->spriteVida, 855 + (i * TAMANHO_BLOCO), 430, 0);
+        al_draw_bitmap(info->spriteVida, 830 + (i * TAMANHO_BLOCO), 430, 0);
     }
 
     // Mostra a quantidade de livros de forma gráfica
-    for(i = 0; i < livros->quantidade; i++){
-        al_draw_bitmap(info->iconeLivros, 835 + (i * TAMANHO_BLOCO), 600, 0);
+    for(i = 0; i < jogador->livros; i++){
+        al_draw_bitmap(info->iconeLivros, 830 + (i * TAMANHO_BLOCO), 630, 0);
     }
 
     // Desenha a moldura para a barra de pontos
-    al_draw_bitmap(info->spriteMoldura, 795, 230, 0);
+    al_draw_bitmap(info->spriteMoldura, 830, 250, 0);
 
     // Mostra a quantidade de pontos de forma gráfica
-    for(i = 0; i < jogador->pontosColetados; i++){
-        al_draw_bitmap(info->spritePontos, 800 + i, 235, 0);
-    }
+    for(i = 0; i < jogador->pontosParcial; i++){
+        if(jogador->pontosParcial > 30){
+            jogador->pontosParcial -= 30;
+        }
 
-    jogador->pontosPercentual = jogador->pontosColetados / 2.06;
-    al_draw_textf(info->fonte[FONTE_20], al_map_rgb(0,0,0), 890, 248, 0, "%d%%", jogador->pontosPercentual);
+        al_draw_bitmap(info->spritePontos, 835 + (i * 5), 255, 0);
+    }
 }
 
 // Função que desenha o Valentão
-void desenhaValentao(VALENTAO valentao[], int numeroValentao)
+void desenhaPredador(PERSONAGEM predador[], int numeroPredador)
 {
-    int valentaoAtual;
+    int predadorAtual;
 
-    for(valentaoAtual = 0; valentaoAtual < numeroValentao; valentaoAtual++){
-        al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
+    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
+        al_draw_bitmap(predador[predadorAtual].sprite, TAMANHO_BLOCO * predador[predadorAtual].coluna + X_MAPA, TAMANHO_BLOCO * predador[predadorAtual].linha + Y_MAPA, 0);
     }
 }
 
@@ -182,10 +180,8 @@ void desenhaMapa(int mapa[COL][LIN], IMAGEM *imagem)
 }
 
 // Função que movimenta o Jogador
-void moveJogador(JOGADOR *jogador, VALENTAO valentao[], int mapa[COL][LIN], char sentido, int numeroValentao)
+void moveJogador(PERSONAGEM *jogador, PERSONAGEM predador[], int mapa[COL][LIN], char sentido, int predadorAtual)
 {
-    int valentaoAtual;
-
     switch(sentido){
     case 'U':
         jogador->linha--;
@@ -251,30 +247,122 @@ void moveJogador(JOGADOR *jogador, VALENTAO valentao[], int mapa[COL][LIN], char
     // Soma pontos +1
     if(mapa[jogador->linha][jogador->coluna] == 1){
         mapa[jogador->linha][jogador->coluna] = 0;
-        jogador->pontos++;
-        jogador->pontosColetados++;
+        jogador->pontosParcial++;
+        jogador->pontosTotal++;
     }
 
     // Soma pontos +10
     if(mapa[jogador->linha][jogador->coluna] == 2){
         mapa[jogador->linha][jogador->coluna] = 0;
-        jogador->pontos += 10;
-        jogador->pontosColetados += 10;
+        jogador->pontosParcial += 10;
+        jogador->pontosTotal += 10;
     }
+        for(predadorAtual = 0; predadorAtual < 4; predadorAtual++)
+        {
 
-    for(valentaoAtual = 0; valentaoAtual < numeroValentao; valentaoAtual++){
-        if(jogador->coluna == valentao[valentaoAtual].coluna && jogador->linha == valentao[valentaoAtual].linha){
-            jogador->vidas--;
-            jogador->linha = JOGADOR_LINHA;
-            jogador->coluna = JOGADOR_COLUNA;
+            if(jogador->coluna == predador[predadorAtual].coluna && jogador->linha == predador[predadorAtual].linha)
+            {
+                jogador->vidas--;
+                jogador->linha = JOGADOR_LINHA;
+                jogador->coluna = JOGADOR_COLUNA;
+            }
         }
-    }
 }
 
 // Função que movimenta o Valentão
-void moveValentao(VALENTAO valentao[], JOGADOR *jogador, int valentaoAtual, int mapa[COL][LIN])
+void movePredador(PERSONAGEM predador[], PERSONAGEM *jogador, int predadorAtual, int mapa[COL][LIN])
 {
-    // inserir a função de movimento do Valentão
+    float distancia[4];
+    float menorDistancia = 0;
+    bool trocaSentido = false;
+    int i, j;
+
+    for(i = 0; i < 4; i++){
+        predador[predadorAtual].movimentoAnt[i] = predador[predadorAtual].movimentoAtual[i];
+    }
+
+    int predadorMenosLinha = mapa[predador[predadorAtual].linha - 1][predador[predadorAtual].coluna];
+    int predadorMaisLinha = mapa[predador[predadorAtual].linha + 1][predador[predadorAtual].coluna];
+    int predadorMenosColuna = mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna - 1];
+    int predadorMaisColuna = mapa[predador[predadorAtual].linha][predador[predadorAtual].coluna + 1];
+
+    if(predadorMenosLinha != 3 && predadorMenosLinha != 4 && predadorMenosLinha != 6){
+        distancia[UP] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        predador[predadorAtual].movimentoAtual[UP] = true;
+    }else{
+        distancia[UP] = 99;
+        predador[predadorAtual].movimentoAtual[UP] = false;
+    }
+
+
+    if(predadorMaisLinha != 3 && predadorMaisLinha != 4 && predadorMaisLinha != 6){
+        distancia[DOWN] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        predador[predadorAtual].movimentoAtual[DOWN] = true;
+    }else{
+        distancia[DOWN] = 99;
+        predador[predadorAtual].movimentoAtual[DOWN] = false;
+    }
+
+    if(predadorMenosColuna != 3 && predadorMenosColuna != 4 && predadorMenosColuna != 6){
+        distancia[LEFT] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        predador[predadorAtual].movimentoAtual[LEFT] = true;
+    }else{
+        distancia[LEFT] = 99;
+        predador[predadorAtual].movimentoAtual[LEFT] = false;
+    }
+
+
+    if(predadorMaisColuna != 3 && predadorMaisColuna != 4 && predadorMaisColuna != 6){
+        distancia[RIGHT] = calculaDistancia(jogador, predador, predadorAtual, mapa);
+        predador[predadorAtual].movimentoAtual[RIGHT] = true;
+    }else{
+        distancia[RIGHT] = 99;
+        predador[predadorAtual].movimentoAtual[RIGHT] = false;
+    }
+
+    menorDistancia = distancia[0];
+
+    for(i = 0; i < 4; i++){
+        if(predador[predadorAtual].movimentoAtual[i] != predador[predadorAtual].movimentoAnt[i]){
+            trocaSentido = true;
+        }else{
+            trocaSentido = false;
+        }
+    }
+
+    if(trocaSentido){
+        for(j = 0; j < 4; j++){
+            if(distancia[j] <= menorDistancia && distancia[j] != 99){
+                menorDistancia = distancia[j];
+                predador[predadorAtual].sentido = j;
+            }
+        }
+    }
+
+    switch(predador[predadorAtual].sentido){
+        case 0:
+            predador[predadorAtual].linha--;
+            break;
+        case 1:
+            predador[predadorAtual].linha++;
+            break;
+        case 2:
+            predador[predadorAtual].coluna--;
+            break;
+        case 3:
+            predador[predadorAtual].coluna++;
+            break;
+    }
+        for(predadorAtual = 0; predadorAtual < 4; predadorAtual++)
+        {
+
+            if(jogador->coluna == predador[predadorAtual].coluna && jogador->linha == predador[predadorAtual].linha)
+            {
+                jogador->vidas--;
+                jogador->linha = JOGADOR_LINHA;
+                jogador->coluna = JOGADOR_COLUNA;
+            }
+        }
 }
 
 // Função que solta as Teclas pressionadas
@@ -288,29 +376,25 @@ void desabilitaTeclas(bool keys[])
 }
 
 // Função que calcula a distância entre dois pontos da matriz
-float calculaDistancia(JOGADOR *jogador, VALENTAO valentao[], int valentaoAtual, int mapa[COL][LIN])
+float calculaDistancia(PERSONAGEM *jogador, PERSONAGEM predador[], int predadorAtual, int mapa[COL][LIN])
 {
-        float distancia = sqrt(pow((jogador->coluna - valentao[valentaoAtual].coluna), 2) + pow((jogador->linha - valentao[valentaoAtual].linha), 2));
+        float distancia = sqrt(pow((jogador->coluna - predador[predadorAtual].coluna), 2) + pow((jogador->linha - predador[predadorAtual].linha), 2));
         return distancia;
 }
 
-void compraLivros(JOGADOR *jogador, LIVROS *livros)
+void compraLivros(PERSONAGEM *jogador)
 {
-    if(jogador->pontos > PONTOS_LIVRO && livros->quantidade < 4){
-        livros->quantidade++;
-        jogador->pontos -= PONTOS_LIVRO;
+    if(jogador->pontosTotal > 10 && jogador->livros < 5){
+        jogador->livros++;
+        jogador->pontosTotal -= 10;
+        jogador->pontosParcial -= 10;
     }
 }
 
-void largaLivros(JOGADOR *jogador, int mapa[COL][LIN], LIVROS *livros)
+void largaLivros(PERSONAGEM *jogador, int mapa[COL][LIN])
 {
-    if(livros->quantidade > 0){
+    if(jogador->livros > 0){
         mapa[jogador->linha][jogador->coluna] = 6;
-        livros->quantidade--;
+        jogador->livros--;
     }
-}
-
-void desenhaPontuacao(JOGADOR *jogador, INFO *info)
-{
-    al_draw_textf(info->fonte[FONTE_300], al_map_rgb(0,0,0), 100, 425, 0, "%d%%", jogador->pontosPercentual);
 }

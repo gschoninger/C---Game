@@ -17,33 +17,30 @@ int main(void)
     int largura = LARGURA_TELA;
     int altura = ALTURA_TELA;
 
+    int predadorAtual = 0;
+    int numeroPredador = 1;
+
+    // Criação da Estrutura Boneco
+    PERSONAGEM jogador;
+    PERSONAGEM predador[numeroPredador];
+
     IMAGEM imagem;
     INFO info;
     TELAS telas;
 
-    LIVROS livros;
-
     telas.telaAtual = TELA_INICIAL;
     telas.proximaTela = JOGO_RODANDO;
 
-    int numeroValentao = NUMERO_VALENTAO;
-    int valentaoAtual = 0;
-
-    JOGADOR jogador;
-    VALENTAO valentao[numeroValentao];
-
-    valentao[0].linha = 1;
-    valentao[0].coluna = 1;
-
-    int atualizaValentao = 0;
-
+    // Posição inicial do personagem
     jogador.linha = JOGADOR_LINHA;
     jogador.coluna = JOGADOR_COLUNA;
-    jogador.pontos = JOGADOR_PONTOS;
-    jogador.pontosColetados = 0;
+    jogador.pontosParcial = JOGADOR_PARCIAL;
+    jogador.pontosTotal = JOGADOR_TOTAL;
     jogador.vidas = JOGADOR_VIDAS;
+    jogador.livros = JOGADOR_LIVROS;
 
-    livros.quantidade = JOGADOR_LIVROS;
+    predador[0].linha = 1;
+    predador[0].coluna = 1;
 
     // Matriz do mapa
                         // 0  1  2  3  4  5  6  7  8  9  10 11 12 13 14 15 16 17 18 19 20
@@ -73,6 +70,7 @@ int main(void)
 
     // Contagem de quadros por segundo
     int FPS = QUADROS;
+    int contaTimer = 0;
 
     // Vetor das Teclas pressionadas
     bool keys[9] = {false, false, false, false, false, false, false, false, false};
@@ -80,6 +78,7 @@ int main(void)
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
     ALLEGRO_TIMER *timer = NULL;
+    ALLEGRO_FONT *fonte = NULL;
 
     // Testa a inicialização do Allegro
     if(!al_init())
@@ -115,8 +114,8 @@ int main(void)
 
     jogador.sprite = al_load_bitmap("Sprites/Jogador/Jogador.bmp");
 
-    for(valentaoAtual = 0; valentaoAtual < numeroValentao; valentaoAtual++){
-        valentao[valentaoAtual].sprite = al_load_bitmap("Sprites/Valentao/Valentao.bmp");
+    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
+        predador[predadorAtual].sprite = al_load_bitmap("Sprites/Predador/Predador.bmp");
     }
 
     info.spriteVida = al_load_bitmap("Sprites/Icones/Vida.bmp");
@@ -130,13 +129,15 @@ int main(void)
     telas.jogo = al_load_bitmap("Sprites/Telas/Jogo.bmp");
     telas.pausa = al_load_bitmap("Sprites/Telas/Pausa.bmp");
     telas.creditos = al_load_bitmap("Sprites/Telas/Creditos.bmp");
-    telas.ganhou = al_load_bitmap(GANHOU_3);
+    telas.ganhou = al_load_bitmap("Sprites/Telas/Ganhou.bmp");
     telas.perdeu = al_load_bitmap("Sprites/Telas/Perdeu.bmp");
 
-    info.fonte[FONTE_20] = al_load_ttf_font("Fontes/FonteBulen.ttf", 20, 0);
-    info.fonte[FONTE_48] = al_load_ttf_font("Fontes/FonteBulen.ttf", 48, 0);
-    info.fonte[FONTE_100] = al_load_ttf_font("Fontes/FonteBulen.ttf", 100, 0);
-    info.fonte[FONTE_300] = al_load_ttf_font("Fontes/FonteBulen.ttf", 300, 0);
+    info.fonte[0] = al_load_ttf_font("Fontes/pac.ttf", 20, 0);
+    info.fonte[1] = al_load_ttf_font("Fontes/arc-classic.ttf", 28, 0);
+    info.fonte[2] = al_load_ttf_font("Fontes/presstart.ttf", 18, 0); // Fonte Tela de Inicio
+    info.fonte[3] = al_load_ttf_font("Fontes/bit-led.ttf", 25, 0); // Fonte Atual tela do Jogo
+    info.fonte[4] = al_load_ttf_font("Fontes/presstart.ttf", 30, 0);
+    info.fonte[5] = al_load_ttf_font("Fontes/presstart.ttf", 22, 0);
 
     event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);
@@ -234,43 +235,39 @@ int main(void)
             case 2:
                 // Jogo rodando
                 if(keys[UP]){
-                    moveJogador(&jogador, valentao, mapa, 'U', numeroValentao);
+                    moveJogador(&jogador, predador, mapa, 'U', predadorAtual);
                 }
 
                 if(keys[DOWN])
-                    moveJogador(&jogador, valentao, mapa, 'D', numeroValentao);
+                    moveJogador(&jogador, predador, mapa, 'D', predadorAtual);
 
                 if(keys[LEFT])
-                    moveJogador(&jogador, valentao, mapa, 'L', numeroValentao);
+                    moveJogador(&jogador, predador, mapa, 'L', predadorAtual);
 
                 if(keys[RIGHT])
-                    moveJogador(&jogador, valentao, mapa, 'R', numeroValentao);
+                    moveJogador(&jogador, predador, mapa, 'R', predadorAtual);
 
                 if(keys[COMPRA])
-                    compraLivros(&jogador, &livros);
+                    compraLivros(&jogador);
 
                 if(keys[LARGA])
-                    largaLivros(&jogador, mapa, &livros);
+                    largaLivros(&jogador, mapa);
 
                 al_draw_bitmap(telas.jogo, 0, 0, 0);
                 desenhaMapa(mapa, &imagem);
-                desenhaInfo(&jogador, &info, &livros);
-                desenhaJogador(&jogador);
-                desenhaValentao(valentao, numeroValentao);
+                desenhaJogador(&jogador, &info);
+                desenhaPredador(predador, numeroPredador);
 
+                contaTimer++;
 
-                atualizaValentao++;
-
-                if(atualizaValentao == TEMPO_VALENTAO){
-                    atualizaValentao = 0;
-                    for(valentaoAtual = 0; valentaoAtual < numeroValentao; valentaoAtual++){
-                        moveValentao(valentao, &jogador, valentaoAtual, mapa);
+                if(contaTimer == VELOCIDADE_PREDADOR){
+                    contaTimer = 0;
+                    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
+                        movePredador(predador, &jogador, predadorAtual, mapa);
                     }
                 }
 
-                // Inserir a função que apaga os Livros
-
-                if(jogador.pontosColetados == 206)
+                if(jogador.pontosTotal == 206)
                     telas.telaAtual = TELA_GANHOU;
 
                 if(jogador.vidas == 0)
@@ -297,7 +294,6 @@ int main(void)
             case 4:
                 // Ganhou
                 al_draw_bitmap(telas.ganhou, 0, 0, 0);
-                desenhaPontuacao(&jogador, &info);
 
                 if(keys[ENTER])
                     telas.telaAtual = TELA_CREDITOS;
@@ -309,7 +305,6 @@ int main(void)
             case 5:
                 // Perdeu
                 al_draw_bitmap(telas.perdeu, 0, 0, 0);
-                desenhaPontuacao(&jogador, &info);
 
                 if(keys[ENTER])
                     telas.telaAtual = TELA_CREDITOS;
