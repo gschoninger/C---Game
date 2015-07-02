@@ -1,4 +1,4 @@
-typedef struct personagem
+typedef struct jogador
 {
     int linha;
     int coluna;
@@ -13,11 +13,36 @@ typedef struct personagem
     int vidas;
     int livros;
 
-    int pontosParcial;
-    int pontosTotal;
+    int pontos;
+    int pontosColetados;
+    int pontosPercentual;
 
     ALLEGRO_BITMAP *sprite;
-} PERSONAGEM;
+} JOGADOR;
+
+typedef struct valentao
+{
+    int linha;
+    int coluna;
+
+    bool movimentoAtual[4];
+    bool movimentoAnt[4];
+
+    int tempoAtualizacao;
+
+    int sentido;
+
+    ALLEGRO_BITMAP *sprite;
+} VALENTAO;
+
+typedef struct livros
+{
+    int quantidade;
+
+    int tempoLivro[4];
+
+    ALLEGRO_BITMAP *sprite;
+} LIVROS;
 
 typedef struct info
 {
@@ -26,7 +51,7 @@ typedef struct info
     ALLEGRO_BITMAP *spriteMoldura;
     ALLEGRO_BITMAP *iconeLivros;
 
-    ALLEGRO_FONT *fonte[10];
+    ALLEGRO_FONT *fonte[4];
 } INFO;
 
 typedef struct imagem
