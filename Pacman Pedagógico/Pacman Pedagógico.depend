@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1435931085 source:c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\pacman.c
+1435942934 source:c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\pacman.c
 	"defines.h"
 
 1435876149 "
@@ -46,7 +46,7 @@
 	<stdio.h>
 	<math.h>
 
-1435751765 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/pacman.c
+1435933699 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/pacman.c
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
@@ -55,32 +55,34 @@
 	<stdio.h>
 	<math.h>
 	"defines.h"
-
-1435929807 source:c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\engine.c
 	"defines.h"
 
-1435931253 c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\defines.h
+1435944840 source:c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\engine.c
+	"defines.h"
+
+1435935180 c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\defines.h
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
 	<allegro5/allegro_font.h>
 	<allegro5/allegro_ttf.h>
-	<allegro5\allegro_audio.h>
-	<allegro5\allegro_acodec.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
 	<stdio.h>
 	<math.h>
 	"struct.h"
 
 1435723424 D
 
-1435929658 c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\struct.h
+1435944288 c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\struct.h
 
 1435718989 342517e3a2f2330962f8b64b5be47c954d7c1
 
-1435751975 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/engine.c
+1435930199 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/engine.c
+	"defines.h"
 	"defines.h"
 
-1435751625 /home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/defines.h
+1435932169 /home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/defines.h
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
@@ -89,8 +91,18 @@
 	<stdio.h>
 	<math.h>
 	"struct.h"
+	<allegro5/allegro.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<stdio.h>
+	<math.h>
+	"struct.h"
 
-1435727391 /home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/struct.h
+1435930199 /home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/struct.h
 
 1435876131 source:c:\users\pako\desktop\pacman pedag骻ico\engine.c
 	"defines.h"
@@ -108,25 +120,5 @@
 1435872227 c:\users\pako\desktop\pacman pedag骻ico\struct.h
 
 1435876149 source:c:\users\pako\desktop\pacman pedag骻ico\pacman.c
-	"defines.h"
-
-1435930199 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/engine.c
-	"defines.h"
-
-1435932169 /home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/defines.h
-	<allegro5/allegro.h>
-	<allegro5/allegro_primitives.h>
-	<allegro5/allegro_image.h>
-	<allegro5/allegro_font.h>
-	<allegro5/allegro_ttf.h>
-	<allegro5/allegro_audio.h>
-	<allegro5/allegro_acodec.h>
-	<stdio.h>
-	<math.h>
-	"struct.h"
-
-1435930199 /home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/struct.h
-
-1435933699 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/pacman.c
 	"defines.h"
 

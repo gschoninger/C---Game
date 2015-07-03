@@ -29,6 +29,8 @@ int main(void)
     int numeroValentao = NUMERO_VALENTAO;
     int valentaoAtual = 0;
 
+    int i;
+
     JOGADOR jogador;
     VALENTAO valentao[numeroValentao];
 
@@ -151,6 +153,8 @@ int main(void)
     al_reserve_samples(10);
 
     musica = al_load_sample("Musica/musica.ogg");
+    if(!musica)
+        printf("Erro na musica!\n");
 
     al_play_sample(musica, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, 0);
 
@@ -197,6 +201,9 @@ int main(void)
                 break;
             case ALLEGRO_KEY_D:
                 keys[LARGA] = true;
+                break;
+            case ALLEGRO_KEY_M:
+                telas.ganhou = al_load_bitmap(GANHOU_1);
                 break;
             }
         }
@@ -361,7 +368,41 @@ int main(void)
     al_destroy_event_queue(event_queue);
     al_destroy_timer(timer);
     al_destroy_display(display);
-    // Destruir Bitmaps
+
+    for(i = 0; i < 3; i++){
+        al_destroy_bitmap(imagem.bloco[i]);
+    }
+
+    for(i = 0; i < 7; i++){
+        al_destroy_bitmap(imagem.parede[i]);
+    }
+
+    al_destroy_bitmap(imagem.livros);
+    al_destroy_bitmap(jogador.sprite);
+
+    for(i = 0; i < numeroValentao; i++){
+        al_destroy_bitmap(valentao[i].sprite);
+        al_destroy_bitmap(valentao[i].spriteGrande);
+    }
+
+    al_destroy_bitmap(info.spriteVida);
+    al_destroy_bitmap(info.spritePontos);
+    al_destroy_bitmap(info.spriteMoldura);
+    al_destroy_bitmap(info.iconeLivros);
+
+
+    al_destroy_bitmap(telas.inicialA);
+    al_destroy_bitmap(telas.inicialB);
+    al_destroy_bitmap(telas.instrucao);
+    al_destroy_bitmap(telas.jogo);
+    al_destroy_bitmap(telas.pausa);
+    al_destroy_bitmap(telas.creditos);
+    al_destroy_bitmap(telas.ganhou);
+    al_destroy_bitmap(telas.perdeu);
+
+    for(i = 0; i < 4; i++){
+        al_destroy_font(info.fonte[i]);
+    }
 
     return 0;
 }

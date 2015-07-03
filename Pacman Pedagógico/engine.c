@@ -324,7 +324,7 @@ void moveValentao(VALENTAO valentao[], JOGADOR *jogador, int valentaoAtual, int 
     float distancia[4];
     float menorDistancia = 0;
     int menorSentido = 0;
-    int i;
+    int i, j;
 
     valentao[valentaoAtual].linha--;
 
@@ -392,6 +392,13 @@ void moveValentao(VALENTAO valentao[], JOGADOR *jogador, int valentaoAtual, int 
             jogador->vidas--;
             jogador->linha = JOGADOR_LINHA;
             jogador->coluna = JOGADOR_COLUNA;
+            for(i = 0; i < COL - 1; i++){
+                for(j = 0; j < LIN - 1; j++){
+                    if(mapa[i][j] == 6){
+                        mapa[i][j] = 0;
+                    }
+                }
+            }
         }
     }
 }
@@ -434,5 +441,5 @@ void largaLivros(JOGADOR *jogador, int mapa[COL][LIN], LIVROS *livros)
 // Função que mostra a pontuação a tela final
 void desenhaPontuacao(JOGADOR *jogador, INFO *info)
 {
-    al_draw_textf(info->fonte[FONTE_300], al_map_rgb(0,0,0), 100, 425, 0, "%d%%", jogador->pontosPercentual);
+    al_draw_textf(info->fonte[FONTE_300], al_map_rgb(0,0,0), 100, 425, 0, "%d", jogador->pontos);
 }
