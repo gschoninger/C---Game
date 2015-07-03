@@ -86,6 +86,7 @@ int main(void)
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
     ALLEGRO_TIMER *timer = NULL;
+    ALLEGRO_SAMPLE *musica = NULL;
 
     // Testa a inicialização do Allegro
     if(!al_init())
@@ -144,6 +145,10 @@ int main(void)
     info.fonte[FONTE_48] = al_load_ttf_font("Fontes/FonteBulen.ttf", 48, 0);
     info.fonte[FONTE_100] = al_load_ttf_font("Fontes/FonteBulen.ttf", 100, 0);
     info.fonte[FONTE_300] = al_load_ttf_font("Fontes/FonteBulen.ttf", 300, 0);
+
+    musica = al_load_sample("Musica/musica.ogg");
+
+    al_play_sample(musica, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, 0);
 
     event_queue = al_create_event_queue();
     timer = al_create_timer(1.0 / FPS);
@@ -280,7 +285,7 @@ int main(void)
                 if(jogador.pontosColetados == 206)
                     telas.telaAtual = TELA_GANHOU;
 
-                if(jogador.vidas < 0)
+                if(jogador.vidas <= 0)
                     telas.telaAtual = TELA_PERDEU;
 
                 if(keys[ESC])

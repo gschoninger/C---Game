@@ -4,6 +4,8 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
+#include <allegro5\allegro_audio.h>
+#include <allegro5\allegro_acodec.h>
 
 // Bibliotecas do C
 #include <stdio.h>
@@ -58,7 +60,7 @@
 #define JOGADOR_PONTOS      0
 #define JOGADOR_VIDAS       3
 #define JOGADOR_LIVROS      1
-#define PONTOS_LIVRO        50
+#define PONTOS_LIVRO        20
 
 #define NUMERO_VALENTAO 4
 
