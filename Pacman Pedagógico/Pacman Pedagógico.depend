@@ -2,9 +2,9 @@
 1435931085 source:c:\users\pako\dropbox\ifsc\722\programa玢o c\c---game\pacman pedag骻ico\pacman.c
 	"defines.h"
 
-1435723482 "
+1435876149 "
 
-1435724277 
+1435875500 
 	"struct.h"
 
 1434739611 source:/home/gschoninger/Dropbox/C---Game/Pacman Pedag贸gico/pacman.c
@@ -108,5 +108,25 @@
 1435872227 c:\users\pako\desktop\pacman pedag骻ico\struct.h
 
 1435876149 source:c:\users\pako\desktop\pacman pedag骻ico\pacman.c
+	"defines.h"
+
+1435930199 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/engine.c
+	"defines.h"
+
+1435932169 /home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/defines.h
+	<allegro5/allegro.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
+	<allegro5/allegro_audio.h>
+	<allegro5/allegro_acodec.h>
+	<stdio.h>
+	<math.h>
+	"struct.h"
+
+1435930199 /home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/struct.h
+
+1435933699 source:/home/gschoninger/Documents/Projeto/C--Game/Pacman Pedag贸gico/pacman.c
 	"defines.h"
 

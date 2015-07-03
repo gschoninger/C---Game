@@ -105,6 +105,8 @@ int main(void)
     al_init_image_addon();
     al_init_font_addon();
     al_init_ttf_addon();
+    al_install_audio();
+    al_init_acodec_addon();
 
     imagem.bloco[0] = al_load_bitmap("Sprites/Blocos/BlocoA.bmp");
     imagem.bloco[1] = al_load_bitmap("Sprites/Blocos/BlocoB.bmp");
@@ -145,6 +147,8 @@ int main(void)
     info.fonte[FONTE_48] = al_load_ttf_font("Fontes/FonteBulen.ttf", 48, 0);
     info.fonte[FONTE_100] = al_load_ttf_font("Fontes/FonteBulen.ttf", 100, 0);
     info.fonte[FONTE_300] = al_load_ttf_font("Fontes/FonteBulen.ttf", 300, 0);
+
+    al_reserve_samples(10);
 
     musica = al_load_sample("Musica/musica.ogg");
 
@@ -353,6 +357,7 @@ int main(void)
     }
 
     // Destrói os objetos
+    al_destroy_sample(musica);
     al_destroy_event_queue(event_queue);
     al_destroy_timer(timer);
     al_destroy_display(display);
