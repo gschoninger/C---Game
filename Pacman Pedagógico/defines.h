@@ -19,7 +19,7 @@
 
 #define TAMANHO_BLOCO 35
 
-#define TEMPO_VALENTAO   30
+#define TEMPO_VALENTAO   20
 #define TEMPO_LIVRO      600
 
 #define X_MAPA 51
@@ -61,6 +61,8 @@
 #define PONTOS_LIVRO        50
 
 #define NUMERO_VALENTAO 4
+
+#define VALENTAO_DESENHO true
 
 #define FONTE_20    0
 #define FONTE_48    1

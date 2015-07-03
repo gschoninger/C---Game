@@ -123,6 +123,7 @@ int main(void)
 
     for(valentaoAtual = 0; valentaoAtual < numeroValentao; valentaoAtual++){
         valentao[valentaoAtual].sprite = al_load_bitmap("Sprites/Valentao/Valentao.bmp");
+        valentao[valentaoAtual].spriteGrande = al_load_bitmap("Sprites/Valentao/Valentao.bmp");
     }
 
     info.spriteVida = al_load_bitmap("Sprites/Icones/Vida.bmp");
@@ -279,7 +280,7 @@ int main(void)
                 if(jogador.pontosColetados == 206)
                     telas.telaAtual = TELA_GANHOU;
 
-                if(jogador.vidas == 0)
+                if(jogador.vidas < 0)
                     telas.telaAtual = TELA_PERDEU;
 
                 if(keys[ESC])

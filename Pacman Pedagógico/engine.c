@@ -4,14 +4,15 @@
 // Função que desenha o Jogador
 void desenhaJogador(JOGADOR *jogador)
 {
-    // Desenha o Jogador
     al_draw_bitmap(jogador->sprite, TAMANHO_BLOCO * jogador->coluna + X_MAPA, TAMANHO_BLOCO * jogador->linha + Y_MAPA, 0);
 }
 
+// Função que mostra as informações na tela
 void desenhaInfo(JOGADOR *jogador, INFO *info, LIVROS *livros)
 {
     int i;
 
+    // Mostra a pontuação absoluta
     al_draw_textf(info->fonte[FONTE_48], al_map_rgb(0,0,0), 880, 130, 0, "%d", jogador->pontos);
 
     // Mostra a quantidade de vidas de forma gráfica
@@ -32,63 +33,64 @@ void desenhaInfo(JOGADOR *jogador, INFO *info, LIVROS *livros)
         al_draw_bitmap(info->spritePontos, 800 + i, 235, 0);
     }
 
-    jogador->pontosPercentual = jogador->pontosColetados / 2.06;
+    // Mostra a pontuação relativa
+    jogador->pontosPercentual = jogador->pontosColetados / 2.05;
     al_draw_textf(info->fonte[FONTE_20], al_map_rgb(0,0,0), 890, 248, 0, "%d%%", jogador->pontosPercentual);
 }
 
 // Função que desenha o Valentão
 void desenhaValentao(VALENTAO valentao[], JOGADOR *jogador, int numeroValentao)
 {
-//    int valentaoAtual;
-//
-//    for(valentaoAtual = 0; valentaoAtual < numeroValentao; valentaoAtual++){
-//        al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
-//    }
+    int valentaoAtual;
 
-    int predadorAtual;
-
-    for(predadorAtual = 0; predadorAtual < numeroPredador; predadorAtual++){
-        if(predador[0].linha == predador[1].linha && predador[0].coluna == predador[1].coluna){
-			al_draw_bitmap(valentao->spriteGrande, TAMANHO_BLOCO * predador[0].coluna + X_MAPA, TAMANHO_BLOCO * predador[0].linha + Y_MAPA, 0);
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[1].coluna + X_MAPA, TAMANHO_BLOCO * predador[1].linha + Y_MAPA, 0);
-		}else{
-			al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
+    if(VALENTAO_DESENHO){
+        for(valentaoAtual = 0; valentaoAtual < numeroValentao; valentaoAtual++){
+            al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
         }
+    }else{
+        for(valentaoAtual = 0; valentaoAtual < numeroValentao; valentaoAtual++){
+            if(valentao[0].linha == valentao[1].linha && valentao[0].coluna == valentao[1].coluna){
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[0].coluna + X_MAPA, TAMANHO_BLOCO * valentao[0].linha + Y_MAPA, 0);
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[1].coluna + X_MAPA, TAMANHO_BLOCO * valentao[1].linha + Y_MAPA, 0);
+            }else{
+                al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
+            }
 
-        if(predador[0].linha == predador[2].linha && predador[0].coluna == predador[2].coluna){
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[0].coluna + X_MAPA, TAMANHO_BLOCO * predador[0].linha + Y_MAPA, 0);
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[2].coluna + X_MAPA, TAMANHO_BLOCO * predador[2].linha + Y_MAPA, 0);
-        }else{
-			al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
-        }
+            if(valentao[0].linha == valentao[2].linha && valentao[0].coluna == valentao[2].coluna){
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[0].coluna + X_MAPA, TAMANHO_BLOCO * valentao[0].linha + Y_MAPA, 0);
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[2].coluna + X_MAPA, TAMANHO_BLOCO * valentao[2].linha + Y_MAPA, 0);
+            }else{
+                al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
+            }
 
-        if(predador[0].linha == predador[3].linha && predador[0].coluna == predador[3].coluna){
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[0].coluna + X_MAPA, TAMANHO_BLOCO * predador[0].linha + Y_MAPA, 0);
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[3].coluna + X_MAPA, TAMANHO_BLOCO * predador[3].linha + Y_MAPA, 0);
-        }else{
-			al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
-        }
+            if(valentao[0].linha == valentao[3].linha && valentao[0].coluna == valentao[3].coluna){
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[0].coluna + X_MAPA, TAMANHO_BLOCO * valentao[0].linha + Y_MAPA, 0);
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[3].coluna + X_MAPA, TAMANHO_BLOCO * valentao[3].linha + Y_MAPA, 0);
+            }else{
+                al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
+            }
 
-        if(predador[1].linha == predador[2].linha && predador[1].coluna == predador[2].coluna){
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[1].coluna + X_MAPA, TAMANHO_BLOCO * predador[1].linha + Y_MAPA, 0);
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[2].coluna + X_MAPA, TAMANHO_BLOCO * predador[2].linha + Y_MAPA, 0);
-        }else{
-			al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
-        }
+            if(valentao[1].linha == valentao[2].linha && valentao[1].coluna == valentao[2].coluna){
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[1].coluna + X_MAPA, TAMANHO_BLOCO * valentao[1].linha + Y_MAPA, 0);
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[2].coluna + X_MAPA, TAMANHO_BLOCO * valentao[2].linha + Y_MAPA, 0);
+            }else{
+                al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
+            }
 
-        if(predador[1].linha == predador[3].linha && predador[1].coluna == predador[3].coluna){
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[1].coluna + X_MAPA, TAMANHO_BLOCO * predador[1].linha + Y_MAPA, 0);
-        }else{
-			al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
-        }
+            if(valentao[1].linha == valentao[3].linha && valentao[1].coluna == valentao[3].coluna){
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[1].coluna + X_MAPA, TAMANHO_BLOCO * valentao[1].linha + Y_MAPA, 0);
+            }else{
+                al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
+            }
 
-        if(predador[2].linha == predador[3].linha && predador[2].coluna == predador[3].coluna){
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[2].coluna + X_MAPA, TAMANHO_BLOCO * predador[2].linha + Y_MAPA, 0);
-			al_draw_bitmap(valentao[valentaoAtual]->spriteBig, TAMANHO_BLOCO * predador[3].coluna + X_MAPA, TAMANHO_BLOCO * predador[3].linha + Y_MAPA, 0);
-        }else{
-			al_draw_bitmap(valentao[predadorAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
+            if(valentao[2].linha == valentao[3].linha && valentao[2].coluna == valentao[3].coluna){
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[2].coluna + X_MAPA, TAMANHO_BLOCO * valentao[2].linha + Y_MAPA, 0);
+                al_draw_bitmap(valentao[valentaoAtual].spriteGrande, TAMANHO_BLOCO * valentao[3].coluna + X_MAPA, TAMANHO_BLOCO * valentao[3].linha + Y_MAPA, 0);
+            }else{
+                al_draw_bitmap(valentao[valentaoAtual].sprite, TAMANHO_BLOCO * valentao[valentaoAtual].coluna + X_MAPA, TAMANHO_BLOCO * valentao[valentaoAtual].linha + Y_MAPA, 0);
+            }
         }
-	}
+    }
 }
 
 // Função que desenha o Mapa
@@ -368,6 +370,7 @@ void moveValentao(VALENTAO valentao[], JOGADOR *jogador, int valentaoAtual, int 
         }
     }
 
+    // Muda a posição do Valentão
     switch(menorSentido){
     case 0:
         valentao[valentaoAtual].linha--;
@@ -383,6 +386,7 @@ void moveValentao(VALENTAO valentao[], JOGADOR *jogador, int valentaoAtual, int 
         break;
     }
 
+    // Testa colisão do Jogador com os Valentões
     for(valentaoAtual = 0; valentaoAtual < 4; valentaoAtual++){
         if(jogador->coluna == valentao[valentaoAtual].coluna && jogador->linha == valentao[valentaoAtual].linha){
             jogador->vidas--;
@@ -409,6 +413,7 @@ float calculaDistancia(JOGADOR *jogador, VALENTAO valentao[], int valentaoAtual,
         return distancia;
 }
 
+// Função que compra os livros
 void compraLivros(JOGADOR *jogador, LIVROS *livros)
 {
     if(jogador->pontos > PONTOS_LIVRO && livros->quantidade < 4){
@@ -417,6 +422,7 @@ void compraLivros(JOGADOR *jogador, LIVROS *livros)
     }
 }
 
+// Função que derruba os livros
 void largaLivros(JOGADOR *jogador, int mapa[COL][LIN], LIVROS *livros)
 {
     if(livros->quantidade > 0 && mapa[jogador->linha][jogador->coluna] != 6){
@@ -425,6 +431,7 @@ void largaLivros(JOGADOR *jogador, int mapa[COL][LIN], LIVROS *livros)
     }
 }
 
+// Função que mostra a pontuação a tela final
 void desenhaPontuacao(JOGADOR *jogador, INFO *info)
 {
     al_draw_textf(info->fonte[FONTE_300], al_map_rgb(0,0,0), 100, 425, 0, "%d%%", jogador->pontosPercentual);

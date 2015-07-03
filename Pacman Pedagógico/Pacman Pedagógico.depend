@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1435876149 source:c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\pacman.c
+1435929899 source:c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\pacman.c
 	"defines.h"
 
 1435723482 "
@@ -56,10 +56,10 @@
 	<math.h>
 	"defines.h"
 
-1435874000 source:c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\engine.c
+1435929807 source:c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\engine.c
 	"defines.h"
 
-1435883269 c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\defines.h
+1435929937 c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\defines.h
 	<allegro5/allegro.h>
 	<allegro5/allegro_primitives.h>
 	<allegro5/allegro_image.h>
@@ -71,7 +71,7 @@
 
 1435723424 D
 
-1435872227 c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\struct.h
+1435929658 c:\users\pako\dropbox\ifsc\722\programação c\c---game\pacman pedagógico\struct.h
 
 1435718989 342517e3a2f2330962f8b64b5be47c954d7c1
 

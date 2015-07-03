@@ -5,13 +5,7 @@ typedef struct jogador
     int linhaAnt;
     int colunaAnt;
 
-    bool movimentoAtual[4];
-    bool movimentoAnt[4];
-
-    int sentido;
-
     int vidas;
-    int livros;
 
     int pontos;
     int pontosColetados;
@@ -32,13 +26,13 @@ typedef struct valentao
 
     int sentido;
 
+    ALLEGRO_BITMAP *spriteGrande;
     ALLEGRO_BITMAP *sprite;
 } VALENTAO;
 
 typedef struct livros
 {
     int quantidade;
-
     int tempoLivro[4];
 
     ALLEGRO_BITMAP *sprite;
