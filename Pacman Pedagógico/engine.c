@@ -274,7 +274,77 @@ void moveJogador(JOGADOR *jogador, VALENTAO valentao[], int mapa[COL][LIN], char
 // Função que movimenta o Valentão
 void moveValentao(VALENTAO valentao[], JOGADOR *jogador, int valentaoAtual, int mapa[COL][LIN])
 {
-    // inserir a função de movimento do Valentão
+    float distancia[4];
+    float menorDistancia = 0;
+    int menorSentido = 0;
+    int i;
+
+    valentao[valentaoAtual].linha--;
+
+    if(mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 3 && mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 4 && mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 6 && valentao[valentaoAtual].linha != valentao[valentaoAtual + 1].linha && valentao[valentaoAtual].coluna != valentao[valentaoAtual + 1].coluna){
+        distancia[0] = calculaDistancia(jogador, valentao, valentaoAtual, mapa);
+    }else{
+        distancia[0] = 99;
+    }
+
+    valentao[valentaoAtual].linha += 2;
+
+    if(mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 3 && mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 4 && mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 6 && valentao[valentaoAtual].linha != valentao[valentaoAtual + 1].linha && valentao[valentaoAtual].coluna != valentao[valentaoAtual + 1].coluna){
+        distancia[1] = calculaDistancia(jogador, valentao, valentaoAtual, mapa);
+    }else{
+        distancia[1] = 99;
+    }
+
+    valentao[valentaoAtual].linha--;
+    valentao[valentaoAtual].coluna--;
+
+    if(mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 3 && mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 4 && mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 6 && valentao[valentaoAtual].linha != valentao[valentaoAtual + 1].linha && valentao[valentaoAtual].coluna != valentao[valentaoAtual + 1].coluna){
+        distancia[2] = calculaDistancia(jogador, valentao, valentaoAtual, mapa);
+    }else{
+        distancia[2] = 99;
+    }
+
+    valentao[valentaoAtual].coluna += 2;
+
+    if(mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 3 && mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 4 && mapa[valentao[valentaoAtual].linha][valentao[valentaoAtual].coluna] != 6 && valentao[valentaoAtual].linha != valentao[valentaoAtual + 1].linha && valentao[valentaoAtual].coluna != valentao[valentaoAtual + 1].coluna){
+        distancia[3] = calculaDistancia(jogador, valentao, valentaoAtual, mapa);
+    }else{
+        distancia[3] = 99;
+    }
+
+    valentao[valentaoAtual].coluna--;
+
+    menorDistancia = distancia[0];
+
+    for(i = 0; i < 4; i++){
+        if(distancia[i] <= menorDistancia && distancia[i] != 99){
+            menorDistancia = distancia[i];
+            menorSentido = i;
+        }
+    }
+
+    switch(menorSentido){
+    case 0:
+        valentao[valentaoAtual].linha--;
+        break;
+    case 1:
+        valentao[valentaoAtual].linha++;
+        break;
+    case 2:
+        valentao[valentaoAtual].coluna--;
+        break;
+    case 3:
+        valentao[valentaoAtual].coluna++;
+        break;
+    }
+
+    for(valentaoAtual = 0; valentaoAtual < 4; valentaoAtual++){
+        if(jogador->coluna == valentao[valentaoAtual].coluna && jogador->linha == valentao[valentaoAtual].linha){
+            jogador->vidas--;
+            jogador->linha = JOGADOR_LINHA;
+            jogador->coluna = JOGADOR_COLUNA;
+        }
+    }
 }
 
 // Função que solta as Teclas pressionadas
