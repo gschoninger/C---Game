@@ -1,6 +1,6 @@
 /*
 |------------------------------------------------------------------------------------------|
-|    Jogo educacional desenvolvido para a disciplina de Programação em Linguagemm C por    |
+|    Jogo educacional desenvolvido para a disciplina de Programação em Linguagem C por    |
 |------------------------------------------------------------------------------------------|
 |               Gabriel Bolgenhagen Schöninger e Vitor Volpato Goulart                     |
 |------------------------------------------------------------------------------------------|
